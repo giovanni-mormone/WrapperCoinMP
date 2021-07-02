@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30709.132
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WrapperCoinMP", "WrapperCoinMP\WrapperCoinMP.csproj", "{8A6FEADD-AFBB-43DB-80B0-77A00081F0D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WrapperCoinMP", "WrapperCoinMP\WrapperCoinMP.csproj", "{8A6FEADD-AFBB-43DB-80B0-77A00081F0D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WrapperTest", "WrapperTest\WrapperTest.csproj", "{EFFCD7ED-CF70-40B0-B4DB-CD6E1BE49DCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMain", "TestMain\TestMain.csproj", "{238378F9-694E-4DEA-900B-7A4E42CBDF6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{8A6FEADD-AFBB-43DB-80B0-77A00081F0D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A6FEADD-AFBB-43DB-80B0-77A00081F0D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A6FEADD-AFBB-43DB-80B0-77A00081F0D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFFCD7ED-CF70-40B0-B4DB-CD6E1BE49DCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFFCD7ED-CF70-40B0-B4DB-CD6E1BE49DCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFFCD7ED-CF70-40B0-B4DB-CD6E1BE49DCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFFCD7ED-CF70-40B0-B4DB-CD6E1BE49DCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{238378F9-694E-4DEA-900B-7A4E42CBDF6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{238378F9-694E-4DEA-900B-7A4E42CBDF6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{238378F9-694E-4DEA-900B-7A4E42CBDF6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{238378F9-694E-4DEA-900B-7A4E42CBDF6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
