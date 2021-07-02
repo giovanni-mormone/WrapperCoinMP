@@ -1,19 +1,30 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
 using WrapperCoinMP;
 namespace WrapperCoinMP
 {
-    public class WrapperCoin
+    public partial class WrapperCoin
     {
-        [DllImport("Coinmp.dll")] static extern int CoinInitSolver(string licenseStr);
-        [DllImport("Coinmp.dll")] static extern int CoinFreeSolver();
+        private int resultInit;
 
-        [DllImport("Coinmp.dll")] static extern string CoinGetSolverName();
-
-        public int InitSolver() => CoinInitSolver("");
-
-        public string GetSolverName() => CoinGetSolverName();
+        public double GetVersion() => CoinGetVersion();
+        public string GetVersionStr() => Marshal.PtrToStringAnsi(CoinGetVersionStrIntPtr());
 
 
+        public WrapperCoin()
+        {
+            resultInit = CoinInitSolver("");
+            if(resultInit != 0)
+            {
+
+            }
+        }
+        public string GetSolverName()
+        {
+            StringBuilder builder = new StringBuilder();
+            CoinGetSolverNameBuf(builder, builder.Capacity);
+            return builder.ToString();
+        }
     }
 }
