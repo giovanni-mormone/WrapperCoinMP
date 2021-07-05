@@ -59,6 +59,9 @@ namespace WrapperCoinMP
                        [In, Out] double[] reducedCost, [In, Out] double[] slackValues, [In, Out] double[] shadowPrice) =>
             CoinGetSolutionValues(problem.getProblem(), activity, reducedCost, slackValues, shadowPrice);
 
+        public static double GetObjectValue(WrapProblem problem) => CoinGetObjectValue(problem.getProblem());
+        public static double GetMipBestBound(WrapProblem problem) => CoinGetMipBestBound(problem.getProblem());
+        public static int GetIterCount(WrapProblem problem) => CoinGetIterCount(problem.getProblem());
         private static string BufferizeArray(string[] toBuff)
         {
             StringBuilder builder = new();

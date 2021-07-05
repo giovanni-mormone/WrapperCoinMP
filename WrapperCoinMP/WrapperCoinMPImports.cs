@@ -28,5 +28,10 @@ namespace WrapperCoinMP
         [DllImport("Coinmp.dll")]
         static extern int CoinGetSolutionValues(IntPtr hProb, [In, Out] double[] activity,
                        [In, Out] double[] reducedCost, [In, Out] double[] slackValues, [In, Out] double[] shadowPrice);
+        [DllImport("coinmp.dll")] static extern double CoinGetObjectValue(IntPtr hProb);
+        [DllImport("coinmp.dll")] static extern double CoinGetMipBestBound(IntPtr hProb);
+        [DllImport("coinmp.dll")] static extern int CoinGetIterCount(IntPtr hProb);
+
+
     }
 }
