@@ -50,6 +50,21 @@ namespace WrapperCoinMP
                                 objectCoeffs, lowerBounds, upperBounds, rowType, rhsValues, rangeValues, matrixBegin, matrixCount, matrixIndex,
                                 matrixValues, BufferizeArray(colNames), BufferizeArray(rowNames), objName);
 
+        
+        //aggiungere spiegazione migliore: si fa così perchè quando hai vincoli delle row con un range non usi rowtype,
+        //ma si usano due vettori che indicano i vicoli della riga; questo viene dalla libreria, si vede a riga 360 di CoinProblem.c
+        public static int LoadProblem(WrapProblem problem, int colCount, int rowCount, int nzCount,
+                       int rangeCount, int objectSense, double objectConst, double[] objectCoeffs,
+                       double[] lowerBounds, double[] upperBounds, double[] rowLower, double[] rowUpper,
+                       int[] matrixBegin, int[] matrixCount, int[] matrixIndex, double[] matrixValues,
+                       string[] colNames, string[] rowNames, string objName)
+        {
+            return LoadProblem(problem, colCount, rowCount, nzCount, rangeCount, objectSense,
+                        objectConst, objectCoeffs, lowerBounds, upperBounds, null, rowLower,
+                        rowUpper, matrixBegin, matrixCount, matrixIndex, matrixValues,
+                        colNames, rowNames, objName);
+        }
+
         public static int OptimizeProblem(WrapProblem problem)
         {
             return CoinOptimizeProblem(problem.getProblem(), SOLV_METHOD_DEFAULT);
