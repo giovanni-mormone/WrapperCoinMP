@@ -57,13 +57,13 @@ namespace WrapperCoinMP
                        int rangeCount, int objectSense, double objectConst, double[] objectCoeffs,
                        double[] lowerBounds, double[] upperBounds, double[] rowLower, double[] rowUpper,
                        int[] matrixBegin, int[] matrixCount, int[] matrixIndex, double[] matrixValues,
-                       string[] colNames, string[] rowNames, string objName)
-        {
-            return LoadProblem(problem, colCount, rowCount, nzCount, rangeCount, objectSense,
+                       string[] colNames, string[] rowNames, string objName) => 
+            LoadProblem(problem, colCount, rowCount, nzCount, rangeCount, objectSense,
                         objectConst, objectCoeffs, lowerBounds, upperBounds, null, rowLower,
                         rowUpper, matrixBegin, matrixCount, matrixIndex, matrixValues,
                         colNames, rowNames, objName);
-        }
+
+        public static int InitValues(WrapProblem problem, double[] values) => CoinLoadInitValues(problem.getProblem(), values);
 
         public static int OptimizeProblem(WrapProblem problem)
         {

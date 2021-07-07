@@ -23,6 +23,9 @@ namespace WrapperCoinMP
                         double[] lowerBounds, double[] upperBounds, char[] rowType, double[] rhsValues,
                         double[] rangeValues, int[] matrixBegin, int[] matrixCount, int[] matrixIndex,
                         double[] matrixValues, string colNamesBuf, string rowNamesBuf, string objName);
+
+        [DllImport("coinmp.dll")] public static extern int CoinLoadInitValues(IntPtr hProb, double[] initValues);
+
         [DllImport("Coinmp.dll")] static extern int CoinOptimizeProblem(IntPtr hProb, int method);
 
         [DllImport("Coinmp.dll")]
