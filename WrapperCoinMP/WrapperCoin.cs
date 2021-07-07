@@ -65,6 +65,12 @@ namespace WrapperCoinMP
 
         public static int InitValues(WrapProblem problem, double[] values) => CoinLoadInitValues(problem.getProblem(), values);
 
+       //'I' -> intero; 'C' -> Reale? 'B' -> bynary
+        public static int LoadInteger(WrapProblem problem, char[] columnType) => CoinLoadInteger(problem.getProblem(), columnType);
+        // priorità default di coin == 1000; 1 == max priorità; priorbranch == ???
+        public static int LoadPriority(WrapProblem problem, int priorCount, int[] priorIndex, int[] priorValues, int[] PriorBranch) =>
+            CoinLoadPriority(problem.getProblem(), priorCount, priorIndex, priorValues, PriorBranch);
+
         public static int OptimizeProblem(WrapProblem problem)
         {
             return CoinOptimizeProblem(problem.getProblem(), SOLV_METHOD_DEFAULT);
