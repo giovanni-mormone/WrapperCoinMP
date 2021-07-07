@@ -70,6 +70,9 @@ namespace WrapperCoinMP
         // priorità default di coin == 1000; 1 == max priorità; priorbranch == ???
         public static int LoadPriority(WrapProblem problem, int priorCount, int[] priorIndex, int[] priorValues, int[] PriorBranch) =>
             CoinLoadPriority(problem.getProblem(), priorCount, priorIndex, priorValues, PriorBranch);
+        public static int LoadSos(WrapProblem problem, int sosCount, int sosNZCount, int[] sosType,
+            int[] sosPrior, int[] sosBegin, int[] sosIndex, double[] sosRef) => CoinLoadSos(problem.getProblem(), sosCount, sosNZCount, sosType, sosPrior, sosBegin,
+                sosIndex, sosRef);
 
         public static int OptimizeProblem(WrapProblem problem)
         {
