@@ -37,6 +37,11 @@ namespace WrapperCoinMP
         [DllImport("coinmp.dll")]
         static extern int CoinLoadNonlinear(IntPtr hProb, int nlpTreeCount, int nlpLineCount, int[] nlpBegin, int[] nlpOper, int[] nlpArg1, 
             int[] nlpArg2, int[] nlpIndex1, int[] nlpIndex2, double[] nlpValue1, double[] nlpValue2);
+        [DllImport("coinmp.dll")] static extern int CoinUnloadProblem(IntPtr hProb);
+
+        [DllImport("coinmp.dll")] static extern int CoinCheckProblem(IntPtr hProb);
+
+
         [DllImport("Coinmp.dll")] static extern int CoinOptimizeProblem(IntPtr hProb, int method);
 
         [DllImport("Coinmp.dll")]

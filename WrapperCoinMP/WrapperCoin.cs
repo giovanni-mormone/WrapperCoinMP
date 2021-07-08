@@ -84,6 +84,18 @@ namespace WrapperCoinMP
             int[] nlpArg2, int[] nlpIndex1, int[] nlpIndex2, double[] nlpValue1, double[] nlpValue2) => CoinLoadNonlinear(problem.getProblem(), nlpTreeCount,
                 nlpLineCount, nlpBegin, nlpOper, nlpArg1, nlpArg2, nlpIndex1, nlpIndex2, nlpValue1, nlpValue2);
         //-------------------------------------------------------------------//
+        public static int UnloadProblem(WrapProblem problem) => CoinUnloadProblem(problem.getProblem());
+
+        // metodo che torna 1 se ci sono 0 colonne; 2 se le righe,  non zero o il range count è <0;
+        // 3 se le range > rows; 4 se objsens non è max o min; 5 se rowtype esiste e gli dai un valore =! da LEGRN;
+        // 6 se con NZ > 0: matrixbegin è <0; 7 se matrixcount <0 e 8 se MatrixBegin[i+1] - pProblem->MatrixBegin[i] != pProblem->MatrixCount[i]
+        // se il valore di matrixbegin in posizione colcount è != da NZcount torna 100 + MatrixBegin[pProblem->ColCount];
+        // 10 se un valore di matindex è <0; 11 se un val di matindex è > di rowcount; 
+        // 12 se ci son low e upp bound e un low è > di un upp; 13 se con coltype trova valori != da CBI;
+        // 14 se non ci sono nomi a colonne; 15 se la lunghezza dei nomi col è > di 100 * num col;
+        // 16 se no nomi row; 17 se la lunghezza dei nomi row è > di 100 * num row; 0 se tutto ok
+        public static int CheckProblem(WrapProblem problem) => CoinCheckProblem(problem.getProblem());
+
 
         public static int OptimizeProblem(WrapProblem problem)
         {
