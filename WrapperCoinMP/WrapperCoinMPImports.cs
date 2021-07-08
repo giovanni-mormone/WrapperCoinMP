@@ -49,20 +49,19 @@ namespace WrapperCoinMP
         [DllImport("coinmp.dll")] static extern IntPtr CoinGetColName(IntPtr hProb, int col);
 
         [DllImport("coinmp.dll")] static extern IntPtr CoinGetRowName(IntPtr hProb, int row);
+        [DllImport("Coinmp.dll")] static extern int CoinOptimizeProblem(IntPtr hProb, int method);
 
         [DllImport("coinmp.dll")] static extern int CoinGetSolutionStatus(IntPtr hProb);
         [DllImport("coinmp.dll")] static extern IntPtr CoinGetSolutionText(IntPtr hProb);
-
-
-
-        [DllImport("Coinmp.dll")] static extern int CoinOptimizeProblem(IntPtr hProb, int method);
+        [DllImport("coinmp.dll")] static extern double CoinGetObjectValue(IntPtr hProb);
+        [DllImport("coinmp.dll")] static extern double CoinGetMipBestBound(IntPtr hProb);
+        [DllImport("coinmp.dll")] static extern int CoinGetIterCount(IntPtr hProb);
+        [DllImport("coinmp.dll")] static extern int CoinGetMipNodeCount(IntPtr hProb);
 
         [DllImport("Coinmp.dll")]
         static extern int CoinGetSolutionValues(IntPtr hProb, [In, Out] double[] activity,
                        [In, Out] double[] reducedCost, [In, Out] double[] slackValues, [In, Out] double[] shadowPrice);
-        [DllImport("coinmp.dll")] static extern double CoinGetObjectValue(IntPtr hProb);
-        [DllImport("coinmp.dll")] static extern double CoinGetMipBestBound(IntPtr hProb);
-        [DllImport("coinmp.dll")] static extern int CoinGetIterCount(IntPtr hProb);
+
 
 
     }

@@ -27,7 +27,7 @@ namespace WrapperCoinMP
         public const int SOLV_OBJSENS_MAX = -1;
         public const int SOLV_OBJSENS_MIN = 1;
 
-        public const int SOLV_METHOD_DEFAULT = 0;
+        public const int SOLV_METHOD_DEFAULT = 0x7;
 
         public static double GetVersion() => CoinGetVersion();
         public static string GetVersionStr() => Marshal.PtrToStringAnsi(CoinGetVersionStrIntPtr());
@@ -108,31 +108,30 @@ namespace WrapperCoinMP
 
         public static string GetColName(WrapProblem problem, int index) => Marshal.PtrToStringAnsi(CoinGetColName(problem.getProblem(), index));
         public static string GetRowName(WrapProblem problem, int index) => Marshal.PtrToStringAnsi(CoinGetRowName(problem.getProblem(), index));
-
-
-        //0:	Optimal solution found
-		//1:	Problem primal infeasible
-		//2:	Problem dual infeasible
-		//3:	Stopped on iterations
-        //4:    Stopped due to errors
-        //5:    Stopped by user
-
-        public static int GetSolutionStatus(WrapProblem problem) => CoinGetSolutionStatus(problem.getProblem());
-        public static string GetSolutionStatusText(WrapProblem problem) => Marshal.PtrToStringAnsi(CoinGetSolutionText(problem.getProblem()));
-
-
         public static int OptimizeProblem(WrapProblem problem)
         {
             return CoinOptimizeProblem(problem.getProblem(), SOLV_METHOD_DEFAULT);
         }
 
-        public static int GetSolutionValues(WrapProblem problem, [In, Out] double[] activity,
-                       [In, Out] double[] reducedCost, [In, Out] double[] slackValues, [In, Out] double[] shadowPrice) =>
-            CoinGetSolutionValues(problem.getProblem(), activity, reducedCost, slackValues, shadowPrice);
+        //0:	Optimal solution found
+        //1:	Problem primal infeasible
+        //2:	Problem dual infeasible
+        //3:	Stopped on iterations
+        //4:    Stopped due to errors
+        //5:    Stopped by user
+        public static int GetSolutionStatus(WrapProblem problem) => CoinGetSolutionStatus(problem.getProblem());
+        public static string GetSolutionStatusText(WrapProblem problem) => Marshal.PtrToStringAnsi(CoinGetSolutionText(problem.getProblem()));
 
         public static double GetObjectValue(WrapProblem problem) => CoinGetObjectValue(problem.getProblem());
         public static double GetMipBestBound(WrapProblem problem) => CoinGetMipBestBound(problem.getProblem());
         public static int GetIterCount(WrapProblem problem) => CoinGetIterCount(problem.getProblem());
+        public static int GetMipNodeCount(WrapProblem problem) => CoinGetMipNodeCount(problem.getProblem());
+
+        public static int GetSolutionValues(WrapProblem problem, [In, Out] double[] activity,
+                       [In, Out] double[] reducedCost, [In, Out] double[] slackValues, [In, Out] double[] shadowPrice) =>
+            CoinGetSolutionValues(problem.getProblem(), activity, reducedCost, slackValues, shadowPrice);
+
+
         private static string BufferizeArray(string[] toBuff)
         {
             StringBuilder builder = new();
