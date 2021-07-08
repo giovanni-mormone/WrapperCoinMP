@@ -75,7 +75,8 @@ namespace WrapperCoinMP
                 sosIndex, sosRef);
 
         public static int LoadSemiCont(WrapProblem problem, int semiCount, int[] semiIndex) => CoinLoadSemiCont(problem.getProblem(), semiCount, semiIndex);
-
+        public static int LoadQuadratic(WrapProblem problem, int[] quadBegin, int[] quadCount, int[] quadIndex, double[] quadValues) =>
+            CoinLoadQuadratic(problem.getProblem(), quadBegin, quadCount, quadIndex, quadValues);
         public static int OptimizeProblem(WrapProblem problem)
         {
             return CoinOptimizeProblem(problem.getProblem(), SOLV_METHOD_DEFAULT);
