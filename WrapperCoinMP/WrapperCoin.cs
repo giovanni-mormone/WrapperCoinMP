@@ -131,6 +131,10 @@ namespace WrapperCoinMP
                        [In, Out] double[] reducedCost, [In, Out] double[] slackValues, [In, Out] double[] shadowPrice) =>
             CoinGetSolutionValues(problem.getProblem(), activity, reducedCost, slackValues, shadowPrice);
 
+        public static int GetSolutionRanges(WrapProblem problem, [In, Out] double[] objLoRange,
+                      [In, Out] double[] objUpRange, [In, Out] double[] rhsLoRange, [In, Out] double[] rhsUpRange) =>
+            CoinGetSolutionRanges(problem.getProblem(), objLoRange, objUpRange, rhsLoRange, rhsUpRange);
+
 
         private static string BufferizeArray(string[] toBuff)
         {
