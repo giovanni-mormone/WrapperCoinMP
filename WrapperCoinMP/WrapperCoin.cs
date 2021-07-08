@@ -126,7 +126,8 @@ namespace WrapperCoinMP
         public static double GetMipBestBound(WrapProblem problem) => CoinGetMipBestBound(problem.getProblem());
         public static int GetIterCount(WrapProblem problem) => CoinGetIterCount(problem.getProblem());
         public static int GetMipNodeCount(WrapProblem problem) => CoinGetMipNodeCount(problem.getProblem());
-
+        //************************
+        // i 3 met qua sotto prendono prima array lunghi quanto n colonne del prob, poi quanto nrows; a metà sempre
         public static int GetSolutionValues(WrapProblem problem, [In, Out] double[] activity,
                        [In, Out] double[] reducedCost, [In, Out] double[] slackValues, [In, Out] double[] shadowPrice) =>
             CoinGetSolutionValues(problem.getProblem(), activity, reducedCost, slackValues, shadowPrice);
@@ -134,6 +135,10 @@ namespace WrapperCoinMP
         public static int GetSolutionRanges(WrapProblem problem, [In, Out] double[] objLoRange,
                       [In, Out] double[] objUpRange, [In, Out] double[] rhsLoRange, [In, Out] double[] rhsUpRange) =>
             CoinGetSolutionRanges(problem.getProblem(), objLoRange, objUpRange, rhsLoRange, rhsUpRange);
+
+        public static int GetSolutionBasis(WrapProblem problem, [In, Out] int[] colStatus,
+                        [In, Out] double[] rowStatus) => CoinGetSolutionBasis(problem.getProblem(), colStatus, rowStatus);
+        //************************
 
 
         private static string BufferizeArray(string[] toBuff)

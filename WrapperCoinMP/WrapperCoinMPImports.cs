@@ -64,6 +64,9 @@ namespace WrapperCoinMP
         [DllImport("coinmp.dll")]
         static extern int CoinGetSolutionRanges(IntPtr hProb, [In, Out] double[] objLoRange,
                       [In, Out] double[] objUpRange, [In, Out] double[] rhsLoRange, [In, Out] double[] rhsUpRange);
+        [DllImport("coinmp.dll")]
+        static extern int CoinGetSolutionBasis(IntPtr hProb, [In, Out] int[] colStatus,
+                        [In, Out] double[] rowStatus);
 
 
     }
