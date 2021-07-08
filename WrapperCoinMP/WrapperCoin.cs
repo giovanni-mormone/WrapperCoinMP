@@ -106,6 +106,10 @@ namespace WrapperCoinMP
         public static int GetColCount(WrapProblem problem) => CoinGetColCount(problem.getProblem());
         public static int GetRowCount(WrapProblem problem) => CoinGetRowCount(problem.getProblem());
 
+        public static string GetColName(WrapProblem problem, int index) => Marshal.PtrToStringAnsi(CoinGetColName(problem.getProblem(), index));
+        public static string GetRowName(WrapProblem problem, int index) => Marshal.PtrToStringAnsi(CoinGetRowName(problem.getProblem(), index));
+
+
 
         public static int OptimizeProblem(WrapProblem problem)
         {
