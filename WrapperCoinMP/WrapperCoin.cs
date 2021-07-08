@@ -96,6 +96,12 @@ namespace WrapperCoinMP
         // 16 se no nomi row; 17 se la lunghezza dei nomi row è > di 100 * num row; 0 se tutto ok
         public static int CheckProblem(WrapProblem problem) => CoinCheckProblem(problem.getProblem());
 
+        public static string GetProblemName(WrapProblem problem)
+        {
+            StringBuilder builder = new StringBuilder(100);
+            CoinGetProblemNameBuf(problem.getProblem(), builder, builder.Capacity);
+            return builder.ToString();
+        }
 
         public static int OptimizeProblem(WrapProblem problem)
         {
