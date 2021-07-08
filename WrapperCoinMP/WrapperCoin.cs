@@ -75,6 +75,16 @@ namespace WrapperCoinMP
                 sosIndex, sosRef);
 
         public static int LoadSemiCont(WrapProblem problem, int semiCount, int[] semiIndex) => CoinLoadSemiCont(problem.getProblem(), semiCount, semiIndex);
+        //-------------------------------------------------------------------//
+        // questi due metodi li inserisco in vista di eventuali aggiornamebti futuri di CoinMP; attualmente non sono implementati dalla dll che wrappo
+        public static int LoadQuadratic(WrapProblem problem, int[] quadBegin, int[] quadCount, int[] quadIndex, double[] quadValues) =>
+            CoinLoadQuadratic(problem.getProblem(), quadBegin, quadCount, quadIndex, quadValues);
+
+        public static int CoinLoadNonlinear(WrapProblem problem, int nlpTreeCount, int nlpLineCount, int[] nlpBegin, int[] nlpOper, int[] nlpArg1,
+            int[] nlpArg2, int[] nlpIndex1, int[] nlpIndex2, double[] nlpValue1, double[] nlpValue2) => CoinLoadNonlinear(problem.getProblem(), nlpTreeCount,
+                nlpLineCount, nlpBegin, nlpOper, nlpArg1, nlpArg2, nlpIndex1, nlpIndex2, nlpValue1, nlpValue2);
+        //-------------------------------------------------------------------//
+
         public static int OptimizeProblem(WrapProblem problem)
         {
             return CoinOptimizeProblem(problem.getProblem(), SOLV_METHOD_DEFAULT);
