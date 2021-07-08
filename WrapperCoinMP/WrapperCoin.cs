@@ -110,6 +110,16 @@ namespace WrapperCoinMP
         public static string GetRowName(WrapProblem problem, int index) => Marshal.PtrToStringAnsi(CoinGetRowName(problem.getProblem(), index));
 
 
+        //0:	Optimal solution found
+		//1:	Problem primal infeasible
+		//2:	Problem dual infeasible
+		//3:	Stopped on iterations
+        //4:    Stopped due to errors
+        //5:    Stopped by user
+
+        public static int GetSolutionStatus(WrapProblem problem) => CoinGetSolutionStatus(problem.getProblem());
+        public static string GetSolutionStatusText(WrapProblem problem) => Marshal.PtrToStringAnsi(CoinGetSolutionText(problem.getProblem()));
+
 
         public static int OptimizeProblem(WrapProblem problem)
         {

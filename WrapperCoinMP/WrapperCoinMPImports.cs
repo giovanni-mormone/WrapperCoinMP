@@ -50,6 +50,9 @@ namespace WrapperCoinMP
 
         [DllImport("coinmp.dll")] static extern IntPtr CoinGetRowName(IntPtr hProb, int row);
 
+        [DllImport("coinmp.dll")] static extern int CoinGetSolutionStatus(IntPtr hProb);
+        [DllImport("coinmp.dll")] static extern IntPtr CoinGetSolutionText(IntPtr hProb);
+
 
 
         [DllImport("Coinmp.dll")] static extern int CoinOptimizeProblem(IntPtr hProb, int method);
