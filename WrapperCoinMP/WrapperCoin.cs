@@ -103,6 +103,10 @@ namespace WrapperCoinMP
             return builder.ToString();
         }
 
+        public static int GetColCount(WrapProblem problem) => CoinGetColCount(problem.getProblem());
+        public static int GetRowCount(WrapProblem problem) => CoinGetRowCount(problem.getProblem());
+
+
         public static int OptimizeProblem(WrapProblem problem)
         {
             return CoinOptimizeProblem(problem.getProblem(), SOLV_METHOD_DEFAULT);
