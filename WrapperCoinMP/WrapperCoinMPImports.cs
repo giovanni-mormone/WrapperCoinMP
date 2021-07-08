@@ -26,10 +26,12 @@ namespace WrapperCoinMP
 
         [DllImport("Coinmp.dll")] static extern int CoinLoadInitValues(IntPtr hProb, double[] initValues);
         [DllImport("Coinmp.dll")] static extern int CoinLoadInteger(IntPtr hProb, char[] columnType);
-        [DllImport("Coinmp.dll")] static extern int CoinLoadPriority(IntPtr hProb, int priorCount,int[] priorIndex, int[] priorValues, int[] PriorBranch);
+        [DllImport("Coinmp.dll")] static extern int CoinLoadPriority(IntPtr hProb, int priorCount, int[] priorIndex, int[] priorValues, int[] PriorBranch);
 
-        [DllImport("coinmp.dll")] static extern int CoinLoadSos(IntPtr hProb, int sosCount,int sosNZCount, int[] sosType, 
+        [DllImport("coinmp.dll")] static extern int CoinLoadSos(IntPtr hProb, int sosCount, int sosNZCount, int[] sosType, 
             int[] sosPrior, int[] sosBegin, int[] sosIndex, double[] sosRef);
+
+        [DllImport("coinmp.dll")] static extern int CoinLoadSemiCont(IntPtr hProb, int semiCount, int[] semiIndex);
         [DllImport("Coinmp.dll")] static extern int CoinOptimizeProblem(IntPtr hProb, int method);
 
         [DllImport("Coinmp.dll")]
