@@ -27,7 +27,7 @@ namespace WrapperCoinMP
         public const int SOLV_OBJSENS_MAX = -1;
         public const int SOLV_OBJSENS_MIN = 1;
 
-        public const int SOLV_METHOD_DEFAULT = 0x7;
+        public const int SOLV_METHOD_DEFAULT = 0;
 
         public static double GetVersion() => CoinGetVersion();
         public static string GetVersionStr() => Marshal.PtrToStringAnsi(CoinGetVersionStrIntPtr());
@@ -139,6 +139,14 @@ namespace WrapperCoinMP
         public static int GetSolutionBasis(WrapProblem problem, [In, Out] int[] colStatus,
                         [In, Out] double[] rowStatus) => CoinGetSolutionBasis(problem.getProblem(), colStatus, rowStatus);
         //************************
+        public static int GetIntOptionMinMax(WrapProblem problem, int optionNr,
+                        [In, Out] int[] minValue, [In, Out] int[] maxValue)  => CoinGetIntOptionMinMax(problem.getProblem(), optionNr,
+                        minValue, maxValue);
+
+        public static string GetOptionName(WrapProblem problem, int optionID) => Marshal.PtrToStringAnsi(CoinGetOptionName(problem.getProblem(), optionID));
+
+
+        public static int GetIntOption(WrapProblem problem, int optionID) => CoinGetIntOption(problem.getProblem(), optionID);
 
 
         private static string BufferizeArray(string[] toBuff)
