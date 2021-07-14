@@ -32,7 +32,25 @@ namespace WrapperCoinMP
     {
         private const int SOLV_CALL_SUCCESS = 0;
         private const int SOLV_CALL_FAILED = -1;
-
+        /*
+        This variables apparently are not used by the coinmp dll; to change the method maybe we should deal with the options
+        /// <summary>
+        /// Constant used to use the primal solve method
+        /// </summary>
+        public const int SOLV_METHOD_PRIMAL = 0x1;
+        /// <summary>
+        /// Constant used to use the dual solve method
+        /// </summary>
+        public const int SOLV_METHOD_DUAL = 0x2;
+        /// <summary>
+        /// Constant used to use the network solve method
+        /// </summary>
+        public const int SOLV_METHOD_NETWORK = 0x4;
+        /// <summary>
+        /// Constant used to use the barrier solve method
+        /// </summary>
+        public const int SOLV_METHOD_BARRIER = 0x8;
+        */
         /// <summary>
         /// Constant used to set a problem as maximization problem
         /// </summary>
@@ -231,7 +249,11 @@ namespace WrapperCoinMP
         /// 16 if the rowss have not got a name; 17 if the length of the row names > di 100 * num row; 0 if all ok
         /// </returns>
         public static int CheckProblem(WrapProblem problem) => CoinCheckProblem(problem.getProblem());
-
+        /// <summary>
+        /// Method used to get the name of a problem
+        /// </summary>
+        /// <param name="problem">The problem to check</param>
+        /// <returns>The name of the problem</returns>
         public static string GetProblemName(WrapProblem problem)
         {
             StringBuilder builder = new StringBuilder(100);
@@ -239,39 +261,132 @@ namespace WrapperCoinMP
             return builder.ToString();
         }
 
+        /// <summary>
+        /// Method used to get the number of columns of a problem
+        /// </summary>
+        /// <param name="problem">The problem to check</param>
+        /// <returns>The number of columns</returns>
         public static int GetColCount(WrapProblem problem) => CoinGetColCount(problem.getProblem());
+
+        /// <summary>
+        /// Method used to get the number of rows of a problem
+        /// </summary>
+        /// <param name="problem">The problem to check</param>
+        /// <returns>The number of roes</returns>
         public static int GetRowCount(WrapProblem problem) => CoinGetRowCount(problem.getProblem());
 
+        /// <summary>
+        /// Method used to get the name of a column of a problem
+        /// </summary>
+        /// <param name="problem">The problem to check</param>
+        /// <param name="index">The index of the column</param>
+        /// <returns>The name of the column</returns>
         public static string GetColName(WrapProblem problem, int index) => Marshal.PtrToStringAnsi(CoinGetColName(problem.getProblem(), index));
+        /// <summary>
+        /// Method used to get the name of a row of a problem
+        /// </summary>
+        /// <param name="problem">The problem to check</param>
+        /// <param name="index">The index of the row</param>
+        /// <returns>The name of the row</returns>
         public static string GetRowName(WrapProblem problem, int index) => Marshal.PtrToStringAnsi(CoinGetRowName(problem.getProblem(), index));
+        /// <summary>
+        /// Method used to optimize a problem
+        /// </summary>
+        /// <param name="problem">The problem to optimize</param>
+        /// <returns>The state of the operation</returns>
         public static int OptimizeProblem(WrapProblem problem)
         {
             return CoinOptimizeProblem(problem.getProblem(), 0);
         }
-
-        //0:	Optimal solution found
-        //1:	Problem primal infeasible
-        //2:	Problem dual infeasible
-        //3:	Stopped on iterations
-        //4:    Stopped due to errors
-        //5:    Stopped by user
+/*
+        public static int OptimizeProblem(WrapProblem problem, int method)
+        {
+            return CoinOptimizeProblem(problem.getProblem(), method);
+        }
+   */
+        /// <summary>
+        /// Method used to check the state of a solution
+        /// </summary>
+        /// <param name="problem">The problem to check</param>
+        /// <returns>
+        /// 0:	Optimal solution found
+        /// 1:	Problem primal infeasible
+        /// 2:	Problem dual infeasible
+        /// 3:	Stopped on iterations
+        /// 4:  Stopped due to errors
+        /// 5:  Stopped by user</returns>
         public static int GetSolutionStatus(WrapProblem problem) => CoinGetSolutionStatus(problem.getProblem());
+        /// <summary>
+        /// Method used to check the state of a solution
+        /// </summary>
+        /// <param name="problem">The problem to check</param>
+        /// <returns>The state of the problem</returns>
         public static string GetSolutionStatusText(WrapProblem problem) => Marshal.PtrToStringAnsi(CoinGetSolutionText(problem.getProblem()));
-
+        /// <summary>
+        /// Method that returns the solution objective value
+        /// </summary>
+        /// <param name="problem">Tge problem to check</param>
+        /// <returns>The objective value</returns>
         public static double GetObjectValue(WrapProblem problem) => CoinGetObjectValue(problem.getProblem());
+        /// <summary>
+        /// Method used to get the currently best known bound on the optimal solution value of a MIP problem
+        /// </summary>
+        /// <param name="problem">The problem to check</param>
+        /// <returns>The best MIP bound</returns>
         public static double GetMipBestBound(WrapProblem problem) => CoinGetMipBestBound(problem.getProblem());
+        /// <summary>
+        /// Method used to get the total number of simplex iterations to solve an LP problem
+        /// </summary>
+        /// <param name="problem">The problem to check</param>
+        /// <returns>The number of iterations</returns>
         public static int GetIterCount(WrapProblem problem) => CoinGetIterCount(problem.getProblem());
+
+        /// <summary>
+        /// Method used to access the number of nodes used to solve a mixed integer problem.
+        /// </summary>
+        /// <param name="problem">The problem to check</param>
+        /// <returns>The node count</returns>
         public static int GetMipNodeCount(WrapProblem problem) => CoinGetMipNodeCount(problem.getProblem());
-        //************************
-        // i 3 met qua sotto prendono prima array lunghi quanto n colonne del prob, poi quanto nrows; a metà sempre
+
+        /// <summary>
+        /// Method used to get the solution values. 
+        /// </summary>
+        /// <param name="problem">The problem to check</param>
+        /// <param name="activity">An array where the values of the primal variables for the problem will be stored.
+        /// The length of the array must be at least as large as the number of columns in the problem object.</param>
+        /// <param name="reducedCost">An array where the values of the dual variables for each of the constraints will be stored. 
+        /// The length of the array must be at least as large as the number of rows in the problem object.</param>
+        /// <param name="slackValues">An array where  the values of the slack or surplus variables for each of the constraints will be stored. 
+        /// The length of the array must be at least as large as the number of rows in the problem object.</param>
+        /// <param name="shadowPrice">An array where the values of the reduced costs for each of the variables will be stored. 
+        /// The length of the array must be at least as large as the number of columns in the problem object</param>
+        /// <returns>The state of the operation. </returns>
         public static int GetSolutionValues(WrapProblem problem, [In, Out] double[] activity,
                        [In, Out] double[] reducedCost, [In, Out] double[] slackValues, [In, Out] double[] shadowPrice) =>
             CoinGetSolutionValues(problem.getProblem(), activity, reducedCost, slackValues, shadowPrice);
 
+        /// <summary>
+        /// Method used to get the solution ranges for obj and rhs values.
+        /// </summary>
+        /// <param name="problem">The problem to check</param>
+        /// <param name="objLoRange">An array where the values of objective function lower range values are to be returned</param>
+        /// <param name="objUpRange">An array where the values of objective function upper range values are to be returned</param>
+        /// <param name="rhsLoRange">An array where the values of righthand side lower range values are to be returned</param>
+        /// <param name="rhsUpRange">An array where the values of righthand side upper range values are to be returned</param>
+        /// <returns>The state of the operation. </returns>
         public static int GetSolutionRanges(WrapProblem problem, [In, Out] double[] objLoRange,
                       [In, Out] double[] objUpRange, [In, Out] double[] rhsLoRange, [In, Out] double[] rhsUpRange) =>
             CoinGetSolutionRanges(problem.getProblem(), objLoRange, objUpRange, rhsLoRange, rhsUpRange);
 
+        /// <summary>
+        /// Method used to get the basis resident in an LP problem object
+        /// </summary>
+        /// <param name="problem">The problem to check</param>
+        /// <param name="colStatus">An array to receive the basis status of the columns in the LP problem object.
+        /// The length of the array must be no less than the number of columns in the matrix.</param>
+        /// <param name="rowStatus">An array to receive the basis status of the artificial/slack/surplus variable associated with each row in the constraint matrix.
+        /// The array's length must be no less than the number of rows in the LP problem object</param>
+        /// <returns>The state of the operation</returns>
         public static int GetSolutionBasis(WrapProblem problem, [In, Out] int[] colStatus,
                         [In, Out] double[] rowStatus) => CoinGetSolutionBasis(problem.getProblem(), colStatus, rowStatus);
         //************************
