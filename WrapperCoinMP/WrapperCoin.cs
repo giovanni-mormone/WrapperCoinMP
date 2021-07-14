@@ -4,7 +4,9 @@ using System.Text;
 using WrapperCoinMP;
 namespace WrapperCoinMP
 {
-
+    /// <summary>
+    /// Structure that wraps the pointer to a problem created by coinmp dll
+    /// </summary>
     public struct WrapProblem
     {
         private IntPtr problem;
@@ -13,34 +15,96 @@ namespace WrapperCoinMP
         {
             this.problem = problem;
         }
+        /// <summary>
+        /// Method used to get the pointer to a problem.
+        /// </summary>
+        /// <returns>The IntPtr to the problem, wrapped</returns>
         public IntPtr getProblem()
         {
             return problem;
         }
 
     }
+    /// <summary>
+    /// Utility class that wraps the methods of the coinmp dll.
+    /// </summary>
     public static partial class WrapperCoin
     {
         private const int SOLV_CALL_SUCCESS = 0;
         private const int SOLV_CALL_FAILED = -1;
 
+        /// <summary>
+        /// Constant used to set a problem as maximization problem
+        /// </summary>
         public const int SOLV_OBJSENS_MAX = -1;
+        /// <summary>
+        /// Constant used to set a problem as minimi problem
+        /// </summary>
         public const int SOLV_OBJSENS_MIN = 1;
 
-        public const int SOLV_METHOD_DEFAULT = 0;
+        //public const int SOLV_METHOD_DEFAULT = 0;
 
+        /// <summary>
+        /// Method used to get the version of the coinmp dll wrapped
+        /// </summary>
+        /// <returns>A real value representing the coinmp dll wrapped</returns>
         public static double GetVersion() => CoinGetVersion();
+        /// <summary>
+        /// Method used to get the version of the coinmp dll wrapped
+        /// </summary>
+        /// <returns>A string representation of the coinmp dll wrapped</returns>
         public static string GetVersionStr() => Marshal.PtrToStringAnsi(CoinGetVersionStrIntPtr());
+        /// <summary>
+        /// Method used to free the solver utilized.
+        /// </summary>
+        /// <returns>The state of the operation</returns>
         public static int FreeSolver() => CoinFreeSolver();
+        /// <summary>
+        /// Method used to get the name of the solver utilized.
+        /// </summary>
+        /// <returns>A strimg representing the solver utilized</returns>
         public static string GetSolverName()
         {
             StringBuilder builder = new StringBuilder();
             CoinGetSolverNameBuf(builder, builder.Capacity);
             return builder.ToString();
         }
+        /// <summary>
+        /// Method used to get the infinity valeu utilized in the wrapper.
+        /// </summary>
+        /// <returns>The double infinity vsalue represented by coinmp dll</returns>
         public static double GetInfinity() => CoinGetInfinity();
+        /// <summary>
+        /// Method used to create a coinmp problem
+        /// </summary>
+        /// <param name="problemName"> A string representing the name assigned to the problem</param>
+        /// <returns>A <see cref="WrapProblem"/> with the problem created</returns>
         public static WrapProblem CreateProblem(string problemName) => new WrapProblem(CoinCreateProblem(problemName));
-
+        /// <summary>
+        /// Method used to load the problem data.
+        /// </summary>
+        /// <param name="problem">The <see cref="WrapProblem"/> where the problem will be loaded</param>
+        /// <param name="colCount">The number of columns of the problem</param>
+        /// <param name="rowCount">The number of rows of the problem</param>
+        /// <param name="nzCount">The number of non zero elements of the problem</param>
+        /// <param name="rangeCount">The number of variables in a rangeù, always 0, use the overload if your problem has a range</param>
+        /// <param name="objectSense">Indicates if a problem is a maximization(-1) or a minimization(1). Either <see cref="SOLV_OBJSENS_MAX"/> or <see cref="SOLV_OBJSENS_MIN"/> sould be used</param>
+        /// <param name="objectConst">Value that indicates a constant values to add to the objecive result</param>
+        /// <param name="objectCoeffs">Double array used to indicate the coeffs of the objective function</param>
+        /// <param name="lowerBounds">Array that represents the lower bounds of the variables</param>
+        /// <param name="upperBounds">Array that represents the upper bounds of the variables</param>
+        /// <param name="rowType">Array of <see cref="char"/> representing the type of the row; 'L' represents a row with a Less or equal; 'E' a row Equal; 'G' a row greather than or equal</param>
+        /// <param name="rhsValues">Array representing the right hand side values of a row</param>
+        /// <param name="rangeValues">value that must be set to null; use the overload of this method with ranges.</param>
+        /// <param name="matrixBegin">Array used to count the total of values of the problem values; it's first values should be zero, then for rach column add the number of non 
+        /// zero values to the previous</param>
+        /// <param name="matrixCount">Array used to count the values of each column</param>
+        /// <param name="matrixIndex">Array that represent the row id of each non zero value column wise</param>
+        /// <param name="matrixValues">Array that represents the value of the coeff of the values columnwise</param>
+        /// <param name="colNames">Array that represents the name of the columns</param>
+        /// <param name="rowNames">Array that represents the name of the rows</param>
+        /// <param name="objName">The name of the objective function</param>
+        /// <returns>the state of the operation</returns>
         public static int LoadProblem(WrapProblem problem, int colCount, int rowCount, int nzCount,
                         int rangeCount, int objectSense, double objectConst, double[] objectCoeffs,
                         double[] lowerBounds, double[] upperBounds, char[] rowType, double[] rhsValues,
@@ -50,8 +114,30 @@ namespace WrapperCoinMP
                                 objectCoeffs, lowerBounds, upperBounds, rowType, rhsValues, rangeValues, matrixBegin, matrixCount, matrixIndex,
                                 matrixValues, BufferizeArray(colNames), BufferizeArray(rowNames), objName);
 
-        
-        //aggiungere spiegazione migliore: si fa così perchè quando hai vincoli delle row con un range non usi rowtype,
+        /// <summary>
+        /// Overload of the LoadProblem method used with ranges; 
+        /// </summary>
+        /// <param name="problem">The <see cref="WrapProblem"/> where the problem will be loaded</param>
+        /// <param name="colCount">The number of columns of the problem</param>
+        /// <param name="rowCount">The number of rows of the problem</param>
+        /// <param name="nzCount">The number of non zero elements of the problem</param>
+        /// <param name="rangeCount">The number of variables in a rangeù, always 0, use the overload if your problem has a range</param>
+        /// <param name="objectSense">Indicates if a problem is a maximization(-1) or a minimization(1). Either <see cref="SOLV_OBJSENS_MAX"/> or <see cref="SOLV_OBJSENS_MIN"/> sould be used</param>
+        /// <param name="objectConst">Value that indicates a constant values to add to the objecive result</param>
+        /// <param name="objectCoeffs">Double array used to indicate the coeffs of the objective function</param>
+        /// <param name="lowerBounds">Array that represents the lower bounds of the variables</param>
+        /// <param name="upperBounds">Array that represents the upper bounds of the variables</param>
+        /// <param name="rowLower">Lower bounds of each row</param>
+        /// <param name="rowUpper">Upper bounds of each row</param>
+        /// <param name="matrixBegin">Array used to count the total of values of the problem values; it's first values should be zero, then for each column add the number of non 
+        /// zero values to the previous</param>
+        /// <param name="matrixCount">Array used to count the values of each column</param>
+        /// <param name="matrixIndex">Array that represent the row id of each non zero value column wise</param>
+        /// <param name="matrixValues">Array that represents the value of the coeff of the values columnwise</param>
+        /// <param name="colNames">Array that represents the name of the columns</param>
+        /// <param name="rowNames">Array that represents the name of the rows</param>
+        /// <param name="objName">The name of the objective function</param>
+        /// <returns>the state of the operation</returns>
         //ma si usano due vettori che indicano i vicoli della riga; questo viene dalla libreria, si vede a riga 360 di CoinProblem.c
         public static int LoadProblem(WrapProblem problem, int colCount, int rowCount, int nzCount,
                        int rangeCount, int objectSense, double objectConst, double[] objectCoeffs,
@@ -63,17 +149,60 @@ namespace WrapperCoinMP
                         rowUpper, matrixBegin, matrixCount, matrixIndex, matrixValues,
                         colNames, rowNames, objName);
 
+
+        /// <summary>
+        /// Method to set initial values of the variables
+        /// </summary>
+        /// <param name="problem">The problem whom set the constraints, after it is initializated with load problem </param>
+        /// <param name="values">The value of each variable</param>
+        /// <returns></returns>
         public static int InitValues(WrapProblem problem, double[] values) => CoinLoadInitValues(problem.getProblem(), values);
 
-       //'I' -> intero; 'C' -> Reale? 'B' -> bynary
+        /// <summary>
+        /// Method used to set the integer type constraint to each variable of a problem, to make it a MIP problem
+        /// </summary>
+        /// <param name="problem">The problem whom set the constraints, after it is initializated with load problem </param>
+        /// <param name="columnType">The type of each column; it can be I to represent am integer, B to represent a Bynary or C a real</param>
+        /// <returns>the state of the operation</returns>
         public static int LoadInteger(WrapProblem problem, char[] columnType) => CoinLoadInteger(problem.getProblem(), columnType);
-        // priorità default di coin == 1000; 1 == max priorità; priorbranch == ???
+        /// <summary>
+        ///  Method used to copy a priority order to an LP problem; the default priority is 1000; the max is 1. 
+        /// </summary>
+        /// <param name="problem">The problem whom set the constraints, after it is initializated with load problem </param>
+        /// <param name="priorCount">The number of priorities set</param>
+        /// <param name="priorIndex">The index of the variables with priorities</param>
+        /// <param name="priorValues">The value of the priority</param>
+        /// <param name="PriorBranch">The direction of the branching; may be null</param>
+        /// <returns></returns>
         public static int LoadPriority(WrapProblem problem, int priorCount, int[] priorIndex, int[] priorValues, int[] PriorBranch) =>
             CoinLoadPriority(problem.getProblem(), priorCount, priorIndex, priorValues, PriorBranch);
+        /// <summary>
+        /// Method used to copy SOS information to a problem object 
+        /// </summary>
+        /// <param name="problem">The problem whom set the constraints, after it is initializated with load problem </param>
+        /// <param name="sosCount">The count of sos values</param>
+        /// <param name="sosNZCount">The total number of non zero values of the sos set</param>
+        /// <param name="sosType">Array containig the sos types; can be 1 or 2; the order of the next variables is in reference to this</param>
+        /// <param name="sosPrior">An array containing priority values for each set. sosPrioe[i] specifies the priority for set i, and may take any nonnegative value. This array may be NULL; otherwise it must be of length at least numsos.</param>
+        /// <param name="sosBegin">An array stating beginning indices; sosRef clarifies it</param>
+        /// <param name="sosIndex">An array stating indices; sosRef clarifies it</param>
+        /// <param name="sosRef">Arrays declaring the indices and weights for the sets. For every set, the indices and weights must be stored in sequential locations in sosIndex and sosRef
+        /// , respectively, with sosBegin[j] containing the index of the beginning of set j. The weights must be unique in their array. For j less than numsos-1 the indices of set j must be 
+        /// stored in sosIndex[sosBegin[j]], ..., sosIndex[sosBegin[j+1]-1] and the weights in sosRef[sosBegin[j], ..., sosRef[sosbeg[j+1]-1]. For the last set,j = numsos-1, the indices must 
+        /// be stored in sosIndex[sosBegin[numsos-1]], ..., sosIndex[numsosnz-1] and the corresponding weights in sosRef[sosBegin[numsos-1]] ..., sosRef[numsosnz-1]. Hence, sosBegin must be of length at 
+        /// least numsos, while sosIndex and sosRef must be of length at least numsosnz.
+        /// Value can be null</param>
+        /// <returns></returns>
         public static int LoadSos(WrapProblem problem, int sosCount, int sosNZCount, int[] sosType,
             int[] sosPrior, int[] sosBegin, int[] sosIndex, double[] sosRef) => CoinLoadSos(problem.getProblem(), sosCount, sosNZCount, sosType, sosPrior, sosBegin,
                 sosIndex, sosRef);
-
+        /// <summary>
+        /// Method used to load semi cont values.
+        /// </summary>
+        /// <param name="problem">The problem whom set the constraints, after it is initializated with load problem </param>
+        /// <param name="semiCount">The number of semi cont values</param>
+        /// <param name="semiIndex">The index of the semi cont values</param>
+        /// <returns></returns>
         public static int LoadSemiCont(WrapProblem problem, int semiCount, int[] semiIndex) => CoinLoadSemiCont(problem.getProblem(), semiCount, semiIndex);
         //-------------------------------------------------------------------//
         // questi due metodi li inserisco in vista di eventuali aggiornamebti futuri di CoinMP; attualmente non sono implementati dalla dll che wrappo
@@ -84,16 +213,23 @@ namespace WrapperCoinMP
             int[] nlpArg2, int[] nlpIndex1, int[] nlpIndex2, double[] nlpValue1, double[] nlpValue2) => CoinLoadNonlinear(problem.getProblem(), nlpTreeCount,
                 nlpLineCount, nlpBegin, nlpOper, nlpArg1, nlpArg2, nlpIndex1, nlpIndex2, nlpValue1, nlpValue2);
         //-------------------------------------------------------------------//
+        /// <summary>
+        /// Method used to free the memory from a problem
+        /// </summary>
+        /// <param name="problem">The problem to free</param>
+        /// <returns>The status of the operation</returns>
         public static int UnloadProblem(WrapProblem problem) => CoinUnloadProblem(problem.getProblem());
 
-        // metodo che torna 1 se ci sono 0 colonne; 2 se le righe,  non zero o il range count è <0;
-        // 3 se le range > rows; 4 se objsens non è max o min; 5 se rowtype esiste e gli dai un valore =! da LEGRN;
-        // 6 se con NZ > 0: matrixbegin è <0; 7 se matrixcount <0 e 8 se MatrixBegin[i+1] - pProblem->MatrixBegin[i] != pProblem->MatrixCount[i]
-        // se il valore di matrixbegin in posizione colcount è != da NZcount torna 100 + MatrixBegin[pProblem->ColCount];
-        // 10 se un valore di matindex è <0; 11 se un val di matindex è > di rowcount; 
-        // 12 se ci son low e upp bound e un low è > di un upp; 13 se con coltype trova valori != da CBI;
-        // 14 se non ci sono nomi a colonne; 15 se la lunghezza dei nomi col è > di 100 * num col;
-        // 16 se no nomi row; 17 se la lunghezza dei nomi row è > di 100 * num row; 0 se tutto ok
+        /// <summary>
+        /// Method tha check the state of a loaded problem
+        /// </summary>
+        /// <param name="problem">The problem to check </param>
+        /// <returns>1 if there are 0 columns; 2 if the rows or non zero values are less than 0; 3 if range is greater than rows; 4 if objsens is non max or min; 5 if the values of 
+        /// rowtype is wrong; 6 if with a number of non zero greater than 0 matbeg is less than 0; 7 if  matrixcount <0 and 8 if MatrixBegin[i+1] - pProblem->MatrixBegin[i] != pProblem->MatrixCount[i]
+        /// if matrixbegin in position colcount  !=  NZcount returns 100 + MatrixBegin[pProblem->ColCount]; 10 if 1 value of matindex è <0; 11 if 1 value of matindex is > rowcount; 
+        /// 12 if with low and upp bound 1 lowbound > upbound; 13 if the coltype values != da CBI;  14 if the columns have not got a name; 15 if the length of the col names > di 100 * num col;
+        /// 16 if the rowss have not got a name; 17 if the length of the row names > di 100 * num row; 0 if all ok
+        /// </returns>
         public static int CheckProblem(WrapProblem problem) => CoinCheckProblem(problem.getProblem());
 
         public static string GetProblemName(WrapProblem problem)
@@ -110,7 +246,7 @@ namespace WrapperCoinMP
         public static string GetRowName(WrapProblem problem, int index) => Marshal.PtrToStringAnsi(CoinGetRowName(problem.getProblem(), index));
         public static int OptimizeProblem(WrapProblem problem)
         {
-            return CoinOptimizeProblem(problem.getProblem(), SOLV_METHOD_DEFAULT);
+            return CoinOptimizeProblem(problem.getProblem(), 0);
         }
 
         //0:	Optimal solution found
@@ -139,14 +275,6 @@ namespace WrapperCoinMP
         public static int GetSolutionBasis(WrapProblem problem, [In, Out] int[] colStatus,
                         [In, Out] double[] rowStatus) => CoinGetSolutionBasis(problem.getProblem(), colStatus, rowStatus);
         //************************
-        public static int GetIntOptionMinMax(WrapProblem problem, int optionNr,
-                        [In, Out] int[] minValue, [In, Out] int[] maxValue)  => CoinGetIntOptionMinMax(problem.getProblem(), optionNr,
-                        minValue, maxValue);
-
-        public static string GetOptionName(WrapProblem problem, int optionID) => Marshal.PtrToStringAnsi(CoinGetOptionName(problem.getProblem(), optionID));
-
-
-        public static int GetIntOption(WrapProblem problem, int optionID) => CoinGetIntOption(problem.getProblem(), optionID);
 
 
         private static string BufferizeArray(string[] toBuff)

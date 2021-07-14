@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace WrapperCoinMP
 {
@@ -67,12 +64,6 @@ namespace WrapperCoinMP
         [DllImport("coinmp.dll")]
         static extern int CoinGetSolutionBasis(IntPtr hProb, [In, Out] int[] colStatus,
                         [In, Out] double[] rowStatus);
-        [DllImport("coinmp.dll")] public static extern IntPtr CoinGetOptionName(IntPtr hProb, int optionID);
-
-        [DllImport("coinmp.dll")]
-        public static extern int CoinGetIntOptionMinMax(IntPtr hProb, int optionNr,
-                        [In, Out] int[] minValue, [In, Out] int[] maxValue);
-        [DllImport("coinmp.dll")] public static extern int CoinGetIntOption(IntPtr hProb, int optionID);
 
 
     }
