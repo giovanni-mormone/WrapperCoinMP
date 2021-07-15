@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using WrapperCoinMP;
@@ -61,6 +62,20 @@ namespace WrapperCoinMP
         public const int SOLV_OBJSENS_MIN = 1;
 
         //public const int SOLV_METHOD_DEFAULT = 0;
+
+        /// <summary>
+        /// Method used to initialize the solver and load the coin dll. It searches in the debug/release path if not specified.
+        /// </summary>
+        /// <param name="path"> The path where the coin mp dll is found; e.g. C://percorso//della/dll/CoinMP.dll</param>
+        public static void InitSolver(string path = "CoinMP.dll")
+        {
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException();
+            }
+            LoadLibrary(path);
+            CoinInitSolver("");
+        }
 
         /// <summary>
         /// Method used to get the version of the coinmp dll wrapped

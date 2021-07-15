@@ -6,6 +6,10 @@ namespace WrapperCoinMP
 {
     public static partial class WrapperCoin
     {
+
+        [DllImport("kernel32.dll")]
+        static extern IntPtr LoadLibrary(string filename);
+
         [DllImport("Coinmp.dll")] static extern int CoinInitSolver(string licenseStr);
         [DllImport("Coinmp.dll")] static extern int CoinFreeSolver();
 
