@@ -80,14 +80,15 @@ namespace TestMain
 			WrapProblem problem = WrapperCoin.CreateProblem(probname);
 			WrapperCoin.LoadProblem(problem, ncol, nrow, nels, nrng, objsens, objconst, dobj, dclo, dcup, rtyp, drhs, null, mbeg, mcnt, midx, mval
 				, colNames, rowNames, objectname);
-			int x = WrapperCoin.OptimizeProblem(problem);
+			WrapperCoin.OptimizeProblem(problem);
 			double res = WrapperCoin.GetObjectValue(problem);
-			double optimalValue = -464.7531428571;
 			double[] activity = new double[ncol];
 			double[] reducedCost = new double[nrow];
 			double[] slackValues = new double[ncol];
 			double[] shadowPrice = new double[nrow];
 			WrapperCoin.GetSolutionValues(problem, activity, reducedCost, slackValues, shadowPrice);
+			double optimalValue = -464.7531428571;
+			Console.WriteLine("optimal value is" + res + "and optimal expected is"+optimalValue);
 			WrapperCoin.UnloadProblem(problem);
 			WrapperCoin.FreeSolver();
 			return 0;
