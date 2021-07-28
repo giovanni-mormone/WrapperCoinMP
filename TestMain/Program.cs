@@ -11,11 +11,16 @@ namespace TestMain
             {
 				//se la dll CoinMP.dll non è nella cartella di debug del programma, passare una stringa con il percorso completo della dll
 				//e.g. C://percorso//della/dll/CoinMP.dll
-                WrapperCoin.InitSolver();
+				//@"/mnt/c/Users/giann/Desktop/coin2/Test/CoinMP/lib/libCoinMP.so"
+				///mnt/c/Work/Uni/TirocinioTesi/WrapperCoinMP/libCoinMP.so
+				WrapperCoin.InitSolver();
             }catch(Exception e)
             {
+				Console.WriteLine(e);
                 return -1;
             }
+			string a = WrapperCoin.GetVersionStr();
+			Console.WriteLine("SIAMO SU LINUX ED E VERSIONE: " + a);
 			const int NUM_COLS = 32;
 			const int NUM_ROWS = 27;
 			const int NUM_NZ = 83;
@@ -89,6 +94,7 @@ namespace TestMain
 			WrapperCoin.GetSolutionValues(problem, activity, reducedCost, slackValues, shadowPrice);
 			double optimalValue = -464.7531428571;
 			Console.WriteLine("optimal value is" + res + "and optimal expected is"+optimalValue);
+			Console.WriteLine(WrapperCoin.GetColName(problem, 6));
 			WrapperCoin.UnloadProblem(problem);
 			WrapperCoin.FreeSolver();
 			return 0;

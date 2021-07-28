@@ -67,14 +67,24 @@ namespace WrapperCoinMP
         /// Method used to initialize the solver and load the coin dll. It searches in the debug/release path if not specified.
         /// </summary>
         /// <param name="path"> The path where the coin mp dll is found; e.g. C://percorso//della/dll/CoinMP.dll</param>
-        public static void InitSolver(string path = "CoinMP.dll")
+       public static void InitSolver(string path = "")
         {
-            if (!File.Exists(path))
+            
+            if (!WrapperCoin.IsLinux() && path != "")
             {
-                throw new FileNotFoundException();
+                if (!File.Exists(path))
+                {
+                    throw new FileNotFoundException();
+                }
+                LoadLibrary(path);
             }
-            LoadLibrary(path);
             CoinInitSolver("");
+        }
+
+        private static bool IsLinux()
+        {
+            int p = (int)Environment.OSVersion.Platform;
+            return (p == 4) || (p == 6) || (p == 128);
         }
 
         /// <summary>
@@ -143,9 +153,9 @@ namespace WrapperCoinMP
                         double[] lowerBounds, double[] upperBounds, char[] rowType, double[] rhsValues,
                         double[] rangeValues, int[] matrixBegin, int[] matrixCount, int[] matrixIndex,
                         double[] matrixValues, string[] colNames, string[] rowNames, string objName) =>
-                            CoinLoadProblemBuf(problem.getProblem(), colCount, rowCount, nzCount, rangeCount, objectSense, objectConst,
+                            CoinLoadProblem(problem.getProblem(), colCount, rowCount, nzCount, rangeCount, objectSense, objectConst,
                                 objectCoeffs, lowerBounds, upperBounds, rowType, rhsValues, rangeValues, matrixBegin, matrixCount, matrixIndex,
-                                matrixValues, BufferizeArray(colNames), BufferizeArray(rowNames), objName);
+                                matrixValues, colNames, rowNames, objName);
 
         /// <summary>
         /// Overload of the LoadProblem method used with ranges; 
@@ -407,6 +417,7 @@ namespace WrapperCoinMP
         //************************
 
 
+    
         private static string BufferizeArray(string[] toBuff)
         {
             StringBuilder builder = new();
