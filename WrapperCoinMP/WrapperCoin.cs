@@ -25,6 +25,12 @@ namespace WrapperCoinMP
             return problem;
         }
 
+        public void setProblem(IntPtr problem)
+        {
+            this.problem = problem;
+        }
+
+
     }
     /// <summary>
     /// Utility class that wraps the methods of the coinmp dll.
@@ -70,7 +76,7 @@ namespace WrapperCoinMP
        public static void InitSolver(string path = "")
         {
             
-            if (!WrapperCoin.IsLinux() && path != "")
+            if (!IsLinux() && path != "")
             {
                 if (!File.Exists(path))
                 {
@@ -78,7 +84,7 @@ namespace WrapperCoinMP
                 }
                 LoadLibrary(path);
             }
-            CoinInitSolver("");
+            _ = CoinInitSolver("");
         }
 
         private static bool IsLinux()
@@ -353,6 +359,11 @@ namespace WrapperCoinMP
         /// <param name="problem">Tge problem to check</param>
         /// <returns>The objective value</returns>
         public static double GetObjectValue(WrapProblem problem) => CoinGetObjectValue(problem.getProblem());
+
+        public static void AddRow(ref WrapProblem problem, double[] rowValues, double rhsValue, char rowType, string rowName) => problem.setProblem(CoinAddRow(problem.getProblem(), rowValues, rhsValue, rowType, rowName));
+        public static int AddColumn(WrapProblem problem, double coeff, double upperbound, double lowerbound) => CoinAddColumn(problem.getProblem(), coeff, upperbound, lowerbound);
+        public static int NullifyRow(WrapProblem problem, int idx) => CoinNullifyRow(problem.getProblem(), idx);
+
         /// <summary>
         /// Method used to get the currently best known bound on the optimal solution value of a MIP problem
         /// </summary>

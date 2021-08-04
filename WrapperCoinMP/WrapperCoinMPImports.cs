@@ -29,6 +29,13 @@ namespace WrapperCoinMP
         [DllImport("CoinMP")] static extern int CoinLoadInteger(IntPtr hProb, char[] columnType);
         [DllImport("CoinMP")] static extern int CoinLoadPriority(IntPtr hProb, int priorCount, int[] priorIndex, int[] priorValues, int[] PriorBranch);
 
+        [DllImport("CoinMP", CharSet = CharSet.Unicode)]
+        static extern IntPtr CoinAddRow(IntPtr hProb, double[] rowValues, double rhsValue, char rowType, string rowName);
+        [DllImport("CoinMP", CharSet = CharSet.Unicode)]
+        static extern int CoinAddColumn(IntPtr hProb, double coeff, double upperbound, double lowerbound);
+
+        [DllImport("CoinMP", CharSet = CharSet.Unicode)]
+        static extern int CoinNullifyRow(IntPtr hProb, int rowidx);
         [DllImport("CoinMP")] static extern int CoinLoadSos(IntPtr hProb, int sosCount, int sosNZCount, int[] sosType, 
             int[] sosPrior, int[] sosBegin, int[] sosIndex, double[] sosRef);
 

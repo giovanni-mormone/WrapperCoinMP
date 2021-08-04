@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.30709.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WrapperCoinMP", "WrapperCoinMP\WrapperCoinMP.csproj", "{8A6FEADD-AFBB-43DB-80B0-77A00081F0D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WrapperTest", "WrapperTest\WrapperTest.csproj", "{EFFCD7ED-CF70-40B0-B4DB-CD6E1BE49DCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WrapperTest", "WrapperTest\WrapperTest.csproj", "{EFFCD7ED-CF70-40B0-B4DB-CD6E1BE49DCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMain", "TestMain\TestMain.csproj", "{238378F9-694E-4DEA-900B-7A4E42CBDF6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMain", "TestMain\TestMain.csproj", "{238378F9-694E-4DEA-900B-7A4E42CBDF6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{058DD8A6-9772-4408-BCF5-EF0DD0D7D330}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{238378F9-694E-4DEA-900B-7A4E42CBDF6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{238378F9-694E-4DEA-900B-7A4E42CBDF6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{238378F9-694E-4DEA-900B-7A4E42CBDF6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{058DD8A6-9772-4408-BCF5-EF0DD0D7D330}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{058DD8A6-9772-4408-BCF5-EF0DD0D7D330}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{058DD8A6-9772-4408-BCF5-EF0DD0D7D330}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{058DD8A6-9772-4408-BCF5-EF0DD0D7D330}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
