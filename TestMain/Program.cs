@@ -24,7 +24,89 @@ namespace TestMain
 			//max 2d+1d
 			//c3-c0+c2=0
 			//c4-c1=0
+			const int NUM_COLS = 22;
+			const int NUM_ROWS = 0;
+			const int NUM_NZ = 0;
+			const int NUM_RNG = 0;
+			string probname = "MaxFlow";
+			string objectname = "Cost";
+			int objsens = WrapperCoin.SOLV_OBJSENS_MAX;
+			double objconst = 0.0;
+			double infinite = WrapperCoin.GetInfinity();
+			double[] objectCoeffs = new double[NUM_COLS] { 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
+			double[] lowerBounds = new double[NUM_COLS] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+			double[] upperBounds = new double[NUM_COLS] { infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite };
+			char[] rowType = new char[NUM_ROWS] {};
+			double[] drhs = new double[NUM_ROWS] { };
+			int[] mbeg = new int[NUM_COLS + 1] { 0, 0, 0 , 0, 0, 0 , 0, 0, 0 , 0, 0, 0 , 0, 0, 0 , 0, 0, 0 , 0, 0, 0 , 0, 0};
+			int[] mcnt = new int[NUM_COLS] { 0, 0 , 0, 0 , 0, 0 , 0, 0 , 0, 0 , 0, 0 , 0, 0 , 0, 0 , 0, 0 , 0, 0 , 0, 0 };
+			int[] midx = new int[NUM_NZ] { };
+			double[] mval = new double[NUM_NZ] { };
+			WrapProblem problem = WrapperCoin.CreateProblem(probname);
+			WrapperCoin.LoadProblem(problem, 22, 0, 0, 0, objsens, objconst, objectCoeffs, lowerBounds, upperBounds, rowType, drhs, null, mbeg, mcnt, midx, mval
+				, null, null, objectname);
+			WrapperCoin.OptimizeProblem(problem);
+			double res = WrapperCoin.GetObjectValue(problem);
+			double[] activity = new double[NUM_COLS];
+			double[] reducedCost = new double[NUM_COLS];
+			double[] slackValues = new double[16];
+			double[] shadowPrice = new double[16];
+			WrapperCoin.GetSolutionValues(problem, activity, reducedCost, slackValues, shadowPrice);
+			WrapperCoin.AddRow(ref problem, new double[NUM_COLS] { 1, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 0, 'E', "");
+			WrapperCoin.AddRow(ref problem, new double[NUM_COLS] { 0, 1, 1, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 0, 'E', "");
+			WrapperCoin.AddRow(ref problem, new double[NUM_COLS] { 0, 0, 0, 1, 0, 1, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 0, 'E', "");
+			WrapperCoin.AddRow(ref problem, new double[NUM_COLS] { 0, 0, 0, 0, 1, 0, 1, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 0, 'E', "");
+			WrapperCoin.AddRow(ref problem, new double[NUM_COLS] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, -1, -1, 0, 0, 0, 0, 0, 0 }, 0, 'E', "");
+			WrapperCoin.AddRow(ref problem, new double[NUM_COLS] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, -1, -1, 0, 0, 0, 0 }, 0, 'E', "");
+			WrapperCoin.AddRow(ref problem, new double[NUM_COLS] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, -1, -1, 0, 0 }, 0, 'E', "");
+			WrapperCoin.AddRow(ref problem, new double[NUM_COLS] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, -1, -1 }, 0, 'E', "");
+			WrapperCoin.AddRow(ref problem, new double[NUM_COLS] { 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 8, 'L', "");
+			WrapperCoin.AddRow(ref problem, new double[NUM_COLS] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 0, 'L', "");
+			WrapperCoin.AddRow(ref problem, new double[NUM_COLS] { 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 0, 'L', "");
+			WrapperCoin.AddRow(ref problem, new double[NUM_COLS] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 }, 8, 'L', "");
+			WrapperCoin.AddRow(ref problem, new double[NUM_COLS] { 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 }, 4, 'L', "");
+			WrapperCoin.AddRow(ref problem, new double[NUM_COLS] { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 }, 4, 'L', "");
+			WrapperCoin.AddRow(ref problem, new double[NUM_COLS] { 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 }, 4, 'L', "");
+			WrapperCoin.AddRow(ref problem, new double[NUM_COLS] { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0 }, 4, 'L', "");
+			WrapperCoin.OptimizeProblem(problem);
+			res = WrapperCoin.GetObjectValue(problem);
+			WrapperCoin.GetSolutionValues(problem, activity, reducedCost, slackValues, shadowPrice);
 
+			/*
+			const int NUM_COLS = 22;
+			const int NUM_ROWS = 16;
+			const int NUM_NZ = 44;
+			const int NUM_RNG = 0;
+			string probname = "MaxFlow";
+			int ncol = NUM_COLS;
+			int nrow = NUM_ROWS;
+			int nels = NUM_NZ;
+			string objectname = "Cost";
+			int objsens = WrapperCoin.SOLV_OBJSENS_MAX;
+			double objconst = 0.0;
+			double infinite = WrapperCoin.GetInfinity();
+			double[] objectCoeffs = new double[NUM_COLS] { 1 ,1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
+			double[] lowerBounds = new double[NUM_COLS] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+			double[] upperBounds = new double[NUM_COLS] { infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite };
+			char[] rowType = new char[NUM_ROWS] { 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L' };
+			double[] drhs = new double[NUM_ROWS] { 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 8, 3, 3, 3, 3 };
+			int[] mbeg = new int[NUM_COLS + 1] { 0, 2, 4, 6, 9, 12, 15, 18, 19, 20, 21, 22, 24, 26, 28, 31, 34, 37, 38, 39, 40, 42, 44};
+			int[] mcnt = new int[NUM_COLS] { 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 1 };
+			int[] midx = new int[NUM_NZ] { 0, 8, 1, 8, 1, 10, 0, 2, 12, 0, 3, 13, 1, 2, 14, 1, 3, 15, 2, 2, 3, 3, 4, 9, 5, 9, 5, 11, 4,6, 12,4,7,13,5,6,14,5,7,15,6,6,7,7};
+			double[] mval = new double[NUM_NZ] { 1, 1, 1, 1, 1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1, -1, -1, -1 , 1, 1, 1, 1, 1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1, -1, -1, -1 };
+			WrapProblem problem = WrapperCoin.CreateProblem(probname);
+			WrapperCoin.LoadProblem(problem, ncol, nrow, nels, 0, objsens, objconst, objectCoeffs, lowerBounds, upperBounds, rowType, drhs, null, mbeg, mcnt, midx, mval
+				, null, null, objectname);
+			WrapperCoin.OptimizeProblem(problem);
+			double res = WrapperCoin.GetObjectValue(problem);
+			double[] activity = new double[NUM_COLS];
+			double[] reducedCost = new double[NUM_COLS];
+			double[] slackValues = new double[NUM_ROWS];
+			double[] shadowPrice = new double[NUM_ROWS];
+			WrapperCoin.GetSolutionValues(problem, activity, reducedCost, slackValues, shadowPrice);
+
+			printResult(res, activity);
+			/*
 			const int NUM_COLS = 5;
 			const int NUM_ROWS = 2;
 			const int NUM_NZ = 6;
@@ -35,7 +117,7 @@ namespace TestMain
 			string probname = "MaxFlow";
 
 			/*
-			string probname = "Afiro";*/
+			string probname = "Afiro";
 			int ncol = NUM_COLS;
 			int nrow = NUM_ROWS;
 			int nels = NUM_NZ;
@@ -91,6 +173,7 @@ namespace TestMain
 			char[] integers = new char[NUM_COLS] { 'I', 'I', 'I', 'I', 'I'};
 			char[] integers2 = new char[NUM_COLS2] { 'I', 'I', 'I', 'I', 'I', 'I', 'I' };
 
+			
 			WrapperCoin.LoadInteger(problem, integers);
 			WrapperCoin.LoadInteger(problem2, integers2);
 			WrapperCoin.OptimizeProblem(problem);
@@ -259,7 +342,7 @@ namespace TestMain
 			res = WrapperCoin.GetObjectValue(problem);
 			cc2 = WrapperCoin.GetRowCount(problem);
 			string c11 = WrapperCoin.GetColName(problem, 0);/*/
-
+			printResult(res, activity);
 			return 0;
         }
 
