@@ -13,8 +13,11 @@ namespace TestMain
 				//e.g. C://percorso//della/dll/CoinMP.dll
 				//@"/mnt/c/Users/giann/Desktop/coin2/Test/CoinMP/lib/libCoinMP.so"
 				//
-				WrapperCoin.InitSolver();
-            }catch(Exception e1)
+				string filepath = @"c:\git\WrapperCoinMP\WrapperCoinMP\bin\CoinMP.dll";
+				WrapperCoin.InitSolver(filepath);
+				Console.WriteLine("Loading CoinMP library from "+filepath);
+				}
+			catch(Exception e1)
             {
 				Console.WriteLine(e1);
                 return -1;
