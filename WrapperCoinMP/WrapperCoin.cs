@@ -2,6 +2,8 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using Newtonsoft.Json;
+
 using WrapperCoinMP;
 namespace WrapperCoinMP
 {
@@ -73,10 +75,25 @@ namespace WrapperCoinMP
         /// Method used to initialize the solver and load the coin dll. It searches in the debug/release path if not specified.
         /// </summary>
         /// <param name="path"> The path where the coin mp dll is found; e.g. C://percorso//della/dll/CoinMP.dll</param>
-       public static void InitSolver(string path = "")
-        {
-            
-            if (!IsLinux() && path != "")
+       public static void InitSolver()
+       {    string path = "";
+            StreamReader fileConfig = null;
+            try
+            {  fileConfig = new StreamReader("WrapperConfig.json");
+               string jConfig = fileConfig.ReadToEnd();
+               var jpath = JsonConvert.DeserializeObject<dynamic>(jConfig).coinmpPath;
+               path = Convert.ToString(jpath);
+            }
+            catch(Exception ex)
+            {  Console.WriteLine("[CONFIG ERROR] "+ex.Message);
+            }
+            finally
+            {  if(fileConfig != null)
+               fileConfig.Close();
+            }
+         Console.WriteLine("Loading CoinMP library from " + path);
+
+         if (!IsLinux() && path != "")
             {
                 if (!File.Exists(path))
                 {

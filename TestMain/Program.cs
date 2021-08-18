@@ -14,8 +14,7 @@ namespace TestMain
 				//@"/mnt/c/Users/giann/Desktop/coin2/Test/CoinMP/lib/libCoinMP.so"
 				//
 				string filepath = @"c:\git\WrapperCoinMP\WrapperCoinMP\bin\CoinMP.dll";
-				WrapperCoin.InitSolver(filepath);
-				Console.WriteLine("Loading CoinMP library from "+filepath);
+				WrapperCoin.InitSolver();
 				}
 			catch(Exception e1)
             {
