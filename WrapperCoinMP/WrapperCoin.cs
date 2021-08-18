@@ -92,6 +92,12 @@ namespace WrapperCoinMP
             int p = (int)Environment.OSVersion.Platform;
             return (p == 4) || (p == 6) || (p == 128);
         }
+        /// <summary>
+        /// Method used to write an mps file of the problem passed to save.
+        /// </summary>
+        /// <param name="Problem"> The problem to save</param>
+        /// <param name="PathToSave"> The path of the output file</param>
+        public static void WriteMPSFile(WrapProblem Problem, string PathToSave) => CoinWriteFile(Problem.getProblem(), 3, PathToSave);
 
         /// <summary>
         /// Method used to get the version of the coinmp dll wrapped

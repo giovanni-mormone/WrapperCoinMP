@@ -11,6 +11,7 @@ namespace WrapperCoinMP
         static extern IntPtr LoadLibrary(string filename);
 
         [DllImport("CoinMP")] static extern int CoinInitSolver(string licenseStr);
+        [DllImport("CoinMP")] static extern int CoinWriteFile(IntPtr hProb, int FileType, string WriteFileName);
         [DllImport("CoinMP")] static extern int CoinFreeSolver();
 
         [DllImport("CoinMP")] static extern int CoinGetSolverNameBuf(StringBuilder solverName, int buflen);
