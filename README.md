@@ -1,8 +1,11 @@
 #  WrapperCoinMP
 
 This project objective is to create a Simple wrapper for the https://github.com/coin-or/CoinMP project. It is written
-using .NET 5.0 and can be run either on windows or unix environment. To work, it is necessary to put the CoinMP.dll, if used
-on windows, or the libCoinMp.so in the folder where the program using this library is used. In windows one can, when initializing the wrapper, tell where the CoinMP.dll is located. The wrapper uses 3 new functions, not implemented in the actual release version of the CoinMP library but implemented by me in a personal version of CoinMP:
+using .NET 5.0 and can be run either on windows or unix environment. If working on windows, it can be specified in a file WrapperConfig.json 
+the path where the CoinMP.dll is on your computer; the config file can be put either in the folder in which the program in run (e.g. for the TestMain project
+in \TestMain\bin\Debug\net5.0\) or in the folder where the code is  (e.g. for the TestMain project in \TestMain).If the config file is not present,
+it is necessary to put the CoinMP.dll, if used on windows, or the libCoinMp.so in the folder where the program using this library is used.The wrapper uses 3 new functions,
+not implemented in the actual release version of the CoinMP library but implemented by me in a personal version of CoinMP:
 -AddRow
 -NullifyRow
 -AddColumn
