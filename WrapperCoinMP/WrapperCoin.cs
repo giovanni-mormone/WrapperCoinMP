@@ -79,13 +79,16 @@ namespace WrapperCoinMP
        {    string path = "";
             StreamReader fileConfig = null;
             try
-            {  fileConfig = new StreamReader("WrapperConfig.json");
-               string jConfig = fileConfig.ReadToEnd();
-               var jpath = JsonConvert.DeserializeObject<dynamic>(jConfig).coinmpPath;
-               path = Convert.ToString(jpath);
+            {
+                string confPath = File.Exists("WrapperConfig.json") ? "WrapperConfig.json": @"..\..\..\WrapperConfig.json";
+                fileConfig = new StreamReader(confPath);
+                string jConfig = fileConfig.ReadToEnd();
+                var jpath = JsonConvert.DeserializeObject<dynamic>(jConfig).coinmpPath;
+                path = Convert.ToString(jpath);
             }
             catch(Exception ex)
-            {  Console.WriteLine("[CONFIG ERROR] "+ex.Message);
+            {  
+                Console.WriteLine("[CONFIG ERROR] "+ex.Message);
             }
             finally
             {  if(fileConfig != null)

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <PackageId>WrapperCoinMP</PackageId>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <Authors>Giovanni Mormone</Authors>
     <PackageDescription>This package Wraps the https://github.com/coin-or/CoinMP project </PackageDescription>
     <RepositoryUrl>https://github.com/giovanni-mormone/WrapperCoinMP</RepositoryUrl>
