@@ -7,11 +7,10 @@ namespace WrapperTest
     public class UnitTest1
     {
 		private WrapProblem problem;
-		private const string path = @"C:/Work/Uni/TirocinioTesi/WrapperCoinMP/CoinMP.dll";
 		[Fact]
 		public void TestAfiroProblem()
 		{
-			WrapperCoin.InitSolver(path);
+			WrapperCoin.InitSolver();
 			const int NUM_COLS = 32;
 			const int NUM_ROWS = 27;
 			const int NUM_NZ = 83;
@@ -86,7 +85,7 @@ namespace WrapperTest
 		[Fact]
 		public void testBakery()
         {
-			WrapperCoin.InitSolver(path);
+			WrapperCoin.InitSolver();
 			const int NUM_COLS = 2;
 			const int NUM_ROWS = 3;
 			const int NUM_NZ = 4;
@@ -134,7 +133,7 @@ namespace WrapperTest
 		[Fact]
 		public void coinTest()
 		{
-			WrapperCoin.InitSolver(path);
+			WrapperCoin.InitSolver();
 			const int NUM_COLS = 8;
 			const int NUM_ROWS = 5;
 			const int NUM_NZ = 14;
@@ -190,7 +189,7 @@ namespace WrapperTest
 		[Fact]
 		public void coinTestMIP()
 		{
-			WrapperCoin.InitSolver(path);
+			WrapperCoin.InitSolver();
 			const int NUM_COLS = 8;
 			const int NUM_ROWS = 5;
 			const int NUM_NZ = 14;
@@ -243,7 +242,7 @@ namespace WrapperTest
 		[Fact]
 		public void coinTestSos1()
 		{
-			WrapperCoin.InitSolver(path);
+			WrapperCoin.InitSolver();
 			const int NUM_COLS = 3;
 			const int NUM_ROWS = 1;
 			const int NUM_NZ = 3;
@@ -301,7 +300,7 @@ namespace WrapperTest
 		[Fact]
 		public void coinTestSos2()
 		{
-			WrapperCoin.InitSolver(path);
+			WrapperCoin.InitSolver();
 			const int NUM_COLS = 7;
 			const int NUM_ROWS = 5;
 			const int NUM_NZ = 15;
@@ -360,7 +359,7 @@ namespace WrapperTest
 		[Fact]
 		public void coinTestP033WithoutSettingTheIntegerConstraints()
 		{
-			WrapperCoin.InitSolver(path);
+			WrapperCoin.InitSolver();
 			const int NUM_COLS = 33;
 			const int NUM_ROWS = 15;
 			const int NUM_NZ = 98;
@@ -443,7 +442,7 @@ namespace WrapperTest
 		[Fact]
 		public void coinTestP033()
 		{
-			WrapperCoin.InitSolver(path);
+			WrapperCoin.InitSolver();
 			const int NUM_COLS = 33;
 			const int NUM_ROWS = 15;
 			const int NUM_NZ = 98;
@@ -527,7 +526,7 @@ namespace WrapperTest
 		[Fact]
 		public void coinTestSemiCont()
 		{
-			WrapperCoin.InitSolver(path);
+			WrapperCoin.InitSolver();
 			const int NUM_COLS = 4;
 			const int NUM_ROWS = 3;
 			const int NUM_NZ = 6;

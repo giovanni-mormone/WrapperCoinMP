@@ -22,12 +22,12 @@ namespace WrapperCoinMP
         /// Method used to get the pointer to a problem.
         /// </summary>
         /// <returns>The IntPtr to the problem, wrapped</returns>
-        public IntPtr getProblem()
+        public IntPtr GetProblem()
         {
             return problem;
         }
 
-        public void setProblem(IntPtr problem)
+        public void SetProblem(IntPtr problem)
         {
             this.problem = problem;
         }
@@ -72,9 +72,10 @@ namespace WrapperCoinMP
         //public const int SOLV_METHOD_DEFAULT = 0;
 
         /// <summary>
-        /// Method used to initialize the solver and load the coin dll. It searches in the debug/release path if not specified.
+        /// Method used to initialize the solver and load the coin dll. It searches the WrapperConfig.json to 
+        /// load the library; if the WrapperConfig is not present or we are working in linux, it searches 
+        /// in the debug/release.
         /// </summary>
-        /// <param name="path"> The path where the coin mp dll is found; e.g. C://percorso//della/dll/CoinMP.dll</param>
        public static void InitSolver()
        {    string path = "";
             StreamReader fileConfig = null;
@@ -117,7 +118,7 @@ namespace WrapperCoinMP
         /// </summary>
         /// <param name="Problem"> The problem to save</param>
         /// <param name="PathToSave"> The path of the output file</param>
-        public static void WriteMPSFile(WrapProblem Problem, string PathToSave) => CoinWriteFile(Problem.getProblem(), 3, PathToSave);
+        public static int WriteMPSFile(WrapProblem Problem, string PathToSave) => CoinWriteFile(Problem.GetProblem(), 3, PathToSave);
 
         /// <summary>
         /// Method used to get the version of the coinmp dll wrapped
@@ -185,7 +186,7 @@ namespace WrapperCoinMP
                         double[] lowerBounds, double[] upperBounds, char[] rowType, double[] rhsValues,
                         double[] rangeValues, int[] matrixBegin, int[] matrixCount, int[] matrixIndex,
                         double[] matrixValues, string[] colNames, string[] rowNames, string objName) =>
-                            CoinLoadProblem(problem.getProblem(), colCount, rowCount, nzCount, rangeCount, objectSense, objectConst,
+                            CoinLoadProblem(problem.GetProblem(), colCount, rowCount, nzCount, rangeCount, objectSense, objectConst,
                                 objectCoeffs, lowerBounds, upperBounds, rowType, rhsValues, rangeValues, matrixBegin, matrixCount, matrixIndex,
                                 matrixValues, colNames, rowNames, objName);
 
@@ -231,7 +232,7 @@ namespace WrapperCoinMP
         /// <param name="problem">The problem whom set the constraints, after it is initializated with load problem </param>
         /// <param name="values">The value of each variable</param>
         /// <returns></returns>
-        public static int InitValues(WrapProblem problem, double[] values) => CoinLoadInitValues(problem.getProblem(), values);
+        public static int InitValues(WrapProblem problem, double[] values) => CoinLoadInitValues(problem.GetProblem(), values);
 
         /// <summary>
         /// Method used to set the integer type constraint to each variable of a problem, to make it a MIP problem
@@ -239,7 +240,7 @@ namespace WrapperCoinMP
         /// <param name="problem">The problem whom set the constraints, after it is initializated with load problem </param>
         /// <param name="columnType">The type of each column; it can be I to represent am integer, B to represent a Bynary or C a real</param>
         /// <returns>the state of the operation</returns>
-        public static int LoadInteger(WrapProblem problem, char[] columnType) => CoinLoadInteger(problem.getProblem(), columnType);
+        public static int LoadInteger(WrapProblem problem, char[] columnType) => CoinLoadInteger(problem.GetProblem(), columnType);
         /// <summary>
         ///  Method used to copy a priority order to an LP problem; the default priority is 1000; the max is 1. 
         /// </summary>
@@ -250,7 +251,7 @@ namespace WrapperCoinMP
         /// <param name="PriorBranch">The direction of the branching; may be null</param>
         /// <returns></returns>
         public static int LoadPriority(WrapProblem problem, int priorCount, int[] priorIndex, int[] priorValues, int[] PriorBranch) =>
-            CoinLoadPriority(problem.getProblem(), priorCount, priorIndex, priorValues, PriorBranch);
+            CoinLoadPriority(problem.GetProblem(), priorCount, priorIndex, priorValues, PriorBranch);
         /// <summary>
         /// Method used to copy SOS information to a problem object 
         /// </summary>
@@ -269,7 +270,7 @@ namespace WrapperCoinMP
         /// Value can be null</param>
         /// <returns></returns>
         public static int LoadSos(WrapProblem problem, int sosCount, int sosNZCount, int[] sosType,
-            int[] sosPrior, int[] sosBegin, int[] sosIndex, double[] sosRef) => CoinLoadSos(problem.getProblem(), sosCount, sosNZCount, sosType, sosPrior, sosBegin,
+            int[] sosPrior, int[] sosBegin, int[] sosIndex, double[] sosRef) => CoinLoadSos(problem.GetProblem(), sosCount, sosNZCount, sosType, sosPrior, sosBegin,
                 sosIndex, sosRef);
         /// <summary>
         /// Method used to load semi cont values.
@@ -278,14 +279,14 @@ namespace WrapperCoinMP
         /// <param name="semiCount">The number of semi cont values</param>
         /// <param name="semiIndex">The index of the semi cont values</param>
         /// <returns></returns>
-        public static int LoadSemiCont(WrapProblem problem, int semiCount, int[] semiIndex) => CoinLoadSemiCont(problem.getProblem(), semiCount, semiIndex);
+        public static int LoadSemiCont(WrapProblem problem, int semiCount, int[] semiIndex) => CoinLoadSemiCont(problem.GetProblem(), semiCount, semiIndex);
         //-------------------------------------------------------------------//
         // questi due metodi li inserisco in vista di eventuali aggiornamebti futuri di CoinMP; attualmente non sono implementati dalla dll che wrappo
         public static int LoadQuadratic(WrapProblem problem, int[] quadBegin, int[] quadCount, int[] quadIndex, double[] quadValues) =>
-            CoinLoadQuadratic(problem.getProblem(), quadBegin, quadCount, quadIndex, quadValues);
+            CoinLoadQuadratic(problem.GetProblem(), quadBegin, quadCount, quadIndex, quadValues);
 
         public static int CoinLoadNonlinear(WrapProblem problem, int nlpTreeCount, int nlpLineCount, int[] nlpBegin, int[] nlpOper, int[] nlpArg1,
-            int[] nlpArg2, int[] nlpIndex1, int[] nlpIndex2, double[] nlpValue1, double[] nlpValue2) => CoinLoadNonlinear(problem.getProblem(), nlpTreeCount,
+            int[] nlpArg2, int[] nlpIndex1, int[] nlpIndex2, double[] nlpValue1, double[] nlpValue2) => CoinLoadNonlinear(problem.GetProblem(), nlpTreeCount,
                 nlpLineCount, nlpBegin, nlpOper, nlpArg1, nlpArg2, nlpIndex1, nlpIndex2, nlpValue1, nlpValue2);
         //-------------------------------------------------------------------//
         /// <summary>
@@ -293,7 +294,7 @@ namespace WrapperCoinMP
         /// </summary>
         /// <param name="problem">The problem to free</param>
         /// <returns>The status of the operation</returns>
-        public static int UnloadProblem(WrapProblem problem) => CoinUnloadProblem(problem.getProblem());
+        public static int UnloadProblem(WrapProblem problem) => CoinUnloadProblem(problem.GetProblem());
 
         /// <summary>
         /// Method tha check the state of a loaded problem
@@ -305,7 +306,7 @@ namespace WrapperCoinMP
         /// 12 if with low and upp bound 1 lowbound > upbound; 13 if the coltype values != da CBI;  14 if the columns have not got a name; 15 if the length of the col names > di 100 * num col;
         /// 16 if the rowss have not got a name; 17 if the length of the row names > di 100 * num row; 0 if all ok
         /// </returns>
-        public static int CheckProblem(WrapProblem problem) => CoinCheckProblem(problem.getProblem());
+        public static int CheckProblem(WrapProblem problem) => CoinCheckProblem(problem.GetProblem());
         /// <summary>
         /// Method used to get the name of a problem
         /// </summary>
@@ -314,7 +315,7 @@ namespace WrapperCoinMP
         public static string GetProblemName(WrapProblem problem)
         {
             StringBuilder builder = new StringBuilder(100);
-            CoinGetProblemNameBuf(problem.getProblem(), builder, builder.Capacity);
+            CoinGetProblemNameBuf(problem.GetProblem(), builder, builder.Capacity);
             return builder.ToString();
         }
 
@@ -323,14 +324,14 @@ namespace WrapperCoinMP
         /// </summary>
         /// <param name="problem">The problem to check</param>
         /// <returns>The number of columns</returns>
-        public static int GetColCount(WrapProblem problem) => CoinGetColCount(problem.getProblem());
+        public static int GetColCount(WrapProblem problem) => CoinGetColCount(problem.GetProblem());
 
         /// <summary>
         /// Method used to get the number of rows of a problem
         /// </summary>
         /// <param name="problem">The problem to check</param>
         /// <returns>The number of roes</returns>
-        public static int GetRowCount(WrapProblem problem) => CoinGetRowCount(problem.getProblem());
+        public static int GetRowCount(WrapProblem problem) => CoinGetRowCount(problem.GetProblem());
 
         /// <summary>
         /// Method used to get the name of a column of a problem
@@ -338,14 +339,14 @@ namespace WrapperCoinMP
         /// <param name="problem">The problem to check</param>
         /// <param name="index">The index of the column</param>
         /// <returns>The name of the column</returns>
-        public static string GetColName(WrapProblem problem, int index) => Marshal.PtrToStringAnsi(CoinGetColName(problem.getProblem(), index));
+        public static string GetColName(WrapProblem problem, int index) => Marshal.PtrToStringAnsi(CoinGetColName(problem.GetProblem(), index));
         /// <summary>
         /// Method used to get the name of a row of a problem
         /// </summary>
         /// <param name="problem">The problem to check</param>
         /// <param name="index">The index of the row</param>
         /// <returns>The name of the row</returns>
-        public static string GetRowName(WrapProblem problem, int index) => Marshal.PtrToStringAnsi(CoinGetRowName(problem.getProblem(), index));
+        public static string GetRowName(WrapProblem problem, int index) => Marshal.PtrToStringAnsi(CoinGetRowName(problem.GetProblem(), index));
         /// <summary>
         /// Method used to optimize a problem
         /// </summary>
@@ -353,12 +354,12 @@ namespace WrapperCoinMP
         /// <returns>The state of the operation</returns>
         public static int OptimizeProblem(WrapProblem problem)
         {
-            return CoinOptimizeProblem(problem.getProblem(), 0);
+            return CoinOptimizeProblem(problem.GetProblem(), 0);
         }
 /*
         public static int OptimizeProblem(WrapProblem problem, int method)
         {
-            return CoinOptimizeProblem(problem.getProblem(), method);
+            return CoinOptimizeProblem(problem.GetProblem(), method);
         }
    */
         /// <summary>
@@ -372,43 +373,43 @@ namespace WrapperCoinMP
         /// 3:	Stopped on iterations
         /// 4:  Stopped due to errors
         /// 5:  Stopped by user</returns>
-        public static int GetSolutionStatus(WrapProblem problem) => CoinGetSolutionStatus(problem.getProblem());
+        public static int GetSolutionStatus(WrapProblem problem) => CoinGetSolutionStatus(problem.GetProblem());
         /// <summary>
         /// Method used to check the state of a solution
         /// </summary>
         /// <param name="problem">The problem to check</param>
         /// <returns>The state of the problem</returns>
-        public static string GetSolutionStatusText(WrapProblem problem) => Marshal.PtrToStringAnsi(CoinGetSolutionText(problem.getProblem()));
+        public static string GetSolutionStatusText(WrapProblem problem) => Marshal.PtrToStringAnsi(CoinGetSolutionText(problem.GetProblem()));
         /// <summary>
         /// Method that returns the solution objective value
         /// </summary>
         /// <param name="problem">Tge problem to check</param>
         /// <returns>The objective value</returns>
-        public static double GetObjectValue(WrapProblem problem) => CoinGetObjectValue(problem.getProblem());
+        public static double GetObjectValue(WrapProblem problem) => CoinGetObjectValue(problem.GetProblem());
 
-        public static void AddRow(ref WrapProblem problem, double[] rowValues, double rhsValue, char rowType, string rowName) => problem.setProblem(CoinAddRow(problem.getProblem(), rowValues, rhsValue, rowType, rowName));
-        public static int AddColumn(WrapProblem problem, double coeff, double upperbound, double lowerbound) => CoinAddColumn(problem.getProblem(), coeff, upperbound, lowerbound);
-        public static int NullifyRow(WrapProblem problem, int idx) => CoinNullifyRow(problem.getProblem(), idx);
+        public static void AddRow(ref WrapProblem problem, double[] rowValues, double rhsValue, char rowType, string rowName) => problem.SetProblem(CoinAddRow(problem.GetProblem(), rowValues, rhsValue, rowType, rowName));
+        public static int AddColumn(WrapProblem problem, double coeff, double upperbound, double lowerbound) => CoinAddColumn(problem.GetProblem(), coeff, upperbound, lowerbound);
+        public static int NullifyRow(WrapProblem problem, int idx) => CoinNullifyRow(problem.GetProblem(), idx);
 
         /// <summary>
         /// Method used to get the currently best known bound on the optimal solution value of a MIP problem
         /// </summary>
         /// <param name="problem">The problem to check</param>
         /// <returns>The best MIP bound</returns>
-        public static double GetMipBestBound(WrapProblem problem) => CoinGetMipBestBound(problem.getProblem());
+        public static double GetMipBestBound(WrapProblem problem) => CoinGetMipBestBound(problem.GetProblem());
         /// <summary>
         /// Method used to get the total number of simplex iterations to solve an LP problem
         /// </summary>
         /// <param name="problem">The problem to check</param>
         /// <returns>The number of iterations</returns>
-        public static int GetIterCount(WrapProblem problem) => CoinGetIterCount(problem.getProblem());
+        public static int GetIterCount(WrapProblem problem) => CoinGetIterCount(problem.GetProblem());
 
         /// <summary>
         /// Method used to access the number of nodes used to solve a mixed integer problem.
         /// </summary>
         /// <param name="problem">The problem to check</param>
         /// <returns>The node count</returns>
-        public static int GetMipNodeCount(WrapProblem problem) => CoinGetMipNodeCount(problem.getProblem());
+        public static int GetMipNodeCount(WrapProblem problem) => CoinGetMipNodeCount(problem.GetProblem());
 
         /// <summary>
         /// Method used to get the solution values. 
@@ -425,7 +426,7 @@ namespace WrapperCoinMP
         /// <returns>The state of the operation. </returns>
         public static int GetSolutionValues(WrapProblem problem, [In, Out] double[] activity,
                        [In, Out] double[] reducedCost, [In, Out] double[] slackValues, [In, Out] double[] shadowPrice) =>
-            CoinGetSolutionValues(problem.getProblem(), activity, reducedCost, slackValues, shadowPrice);
+            CoinGetSolutionValues(problem.GetProblem(), activity, reducedCost, slackValues, shadowPrice);
 
         /// <summary>
         /// Method used to get the solution ranges for obj and rhs values.
@@ -438,7 +439,7 @@ namespace WrapperCoinMP
         /// <returns>The state of the operation. </returns>
         public static int GetSolutionRanges(WrapProblem problem, [In, Out] double[] objLoRange,
                       [In, Out] double[] objUpRange, [In, Out] double[] rhsLoRange, [In, Out] double[] rhsUpRange) =>
-            CoinGetSolutionRanges(problem.getProblem(), objLoRange, objUpRange, rhsLoRange, rhsUpRange);
+            CoinGetSolutionRanges(problem.GetProblem(), objLoRange, objUpRange, rhsLoRange, rhsUpRange);
 
         /// <summary>
         /// Method used to get the basis resident in an LP problem object
@@ -450,7 +451,7 @@ namespace WrapperCoinMP
         /// The array's length must be no less than the number of rows in the LP problem object</param>
         /// <returns>The state of the operation</returns>
         public static int GetSolutionBasis(WrapProblem problem, [In, Out] int[] colStatus,
-                        [In, Out] double[] rowStatus) => CoinGetSolutionBasis(problem.getProblem(), colStatus, rowStatus);
+                        [In, Out] double[] rowStatus) => CoinGetSolutionBasis(problem.GetProblem(), colStatus, rowStatus);
         //************************
 
 
