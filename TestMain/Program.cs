@@ -4,7 +4,7 @@ namespace TestMain
 {
     class Program
     {
-        static int Main(string[] args)
+        static int Main()
         {
             
             try
@@ -13,7 +13,6 @@ namespace TestMain
 				//e.g. C://percorso//della/dll/CoinMP.dll
 				//@"/mnt/c/Users/giann/Desktop/coin2/Test/CoinMP/lib/libCoinMP.so"
 				//
-				string filepath = @"c:\git\WrapperCoinMP\WrapperCoinMP\bin\CoinMP.dll";
 				WrapperCoin.InitSolver();
 				}
 			catch(Exception e1)
@@ -27,9 +26,6 @@ namespace TestMain
 			//c3-c0+c2=0
 			//c4-c1=0
 			const int NUM_COLS = 22;
-			const int NUM_ROWS = 0;
-			const int NUM_NZ = 0;
-			const int NUM_RNG = 0;
 			string probname = "MaxFlow";
 			string objectname = "Cost";
 			int objsens = WrapperCoin.SOLV_OBJSENS_MAX;
@@ -38,17 +34,17 @@ namespace TestMain
 			double[] objectCoeffs = new double[NUM_COLS] { 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
 			double[] lowerBounds = new double[NUM_COLS] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 			double[] upperBounds = new double[NUM_COLS] { infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite, infinite };
-			char[] rowType = new char[NUM_ROWS] {};
-			double[] drhs = new double[NUM_ROWS] { };
+			char[] rowType = Array.Empty<char>();
+			double[] drhs = Array.Empty<double>();
 			int[] mbeg = new int[NUM_COLS + 1] { 0, 0, 0 , 0, 0, 0 , 0, 0, 0 , 0, 0, 0 , 0, 0, 0 , 0, 0, 0 , 0, 0, 0 , 0, 0};
 			int[] mcnt = new int[NUM_COLS] { 0, 0 , 0, 0 , 0, 0 , 0, 0 , 0, 0 , 0, 0 , 0, 0 , 0, 0 , 0, 0 , 0, 0 , 0, 0 };
-			int[] midx = new int[NUM_NZ] { };
-			double[] mval = new double[NUM_NZ] { };
+			int[] midx = Array.Empty<int>();
+			double[] mval = Array.Empty<double>();
 			WrapProblem problem = WrapperCoin.CreateProblem(probname);
 			WrapperCoin.LoadProblem(problem, 22, 0, 0, 0, objsens, objconst, objectCoeffs, lowerBounds, upperBounds, rowType, drhs, null, mbeg, mcnt, midx, mval
 				, null, null, objectname);
 			WrapperCoin.OptimizeProblem(problem);
-			double res = WrapperCoin.GetObjectValue(problem);
+			var res = WrapperCoin.GetObjectValue(problem);
 			double[] activity = new double[NUM_COLS];
 			double[] reducedCost = new double[NUM_COLS];
 			double[] slackValues = new double[16];
@@ -73,13 +69,13 @@ namespace TestMain
 			WrapperCoin.OptimizeProblem(problem);
 			res = WrapperCoin.GetObjectValue(problem);
 			WrapperCoin.GetSolutionValues(problem, activity, reducedCost, slackValues, shadowPrice);
-			printResult(res, activity);
+			PrintResult(res, activity);
 			//il secondo parametro passato è il nome del file mps che verrà salvato, si può creare un path come fatto nell'init solver
 			WrapperCoin.WriteMPSFile(problem, "ProblemaCaricato");
 			return 0;
         }
 
-		static void printResult(double result, double[] activity)
+		static void PrintResult(double result, double[] activity)
         {
 			Console.WriteLine($"The result is: {result}");
 			string ac = string.Join(",",activity);
